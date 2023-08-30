@@ -11,9 +11,9 @@ const testImageZoom = async () => {
     force: true,
     loop: 1,
     framerate: 25,
-    videoFilter: { zoompan: { frames: 400, height: 1920, width: 1080, maxZoom: 1.5, zoomIncrement: 0.0015 } },
+    videoFilter: `zoompan=z='min(zoom+0.0015,1.5)':d=125:s=1080x1920`,
     codecVideo: 'libx264',
-    duration: 20,
+    duration: 5,
     output,
   });
   console.log(video);

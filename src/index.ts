@@ -1,30 +1,7 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { spawn } from 'node:child_process';
 import { getProgress } from './lib/progress.js';
-
-interface Zoompan {
-  zoomIncrement: number;
-  maxZoom: number;
-  frames: number;
-  width: number;
-  height: number;
-}
-
-interface VideoFilter {
-  zoompan?: Zoompan;
-}
-
-interface FFmpegOptions {
-  force?: boolean;
-  output: string;
-  duration?: number;
-  codecAudio?: 'copy';
-  loop?: number;
-  framerate?: number;
-  videoFilter?: VideoFilter;
-  codecVideo?: 'libx264';
-  pixelFormat?: 'yuv420p';
-}
+import { FFmpegOptions, VideoFilter } from './types/index.js';
 
 const transcode = (key: keyof FFmpegOptions, value: string | boolean | number | VideoFilter): string[] => {
   if (key === 'output' || key === 'force') throw new Error('Unhandled key');
@@ -46,11 +23,8 @@ const transcode = (key: keyof FFmpegOptions, value: string | boolean | number | 
     return ['-c:v', value];
   }
   if (key === 'videoFilter') {
-    if (typeof value !== 'object') throw new Error('videoFilter should be typeof object');
-    if (value.zoompan) {
-      const { frames, height, maxZoom, width, zoomIncrement } = value.zoompan;
-      return ['-vf', `zoompan=z='min(zoom+${zoomIncrement},${maxZoom})':d=${frames}:s=${width}x${height}`];
-    } else return [];
+    if (typeof value !== 'string') throw new Error('videoFilter should be typeof string!');
+    return ['-vf', value];
   }
   if (key === 'pixelFormat') {
     if (typeof value !== 'string') throw new Error('pixelFormat should be typeof string!');
