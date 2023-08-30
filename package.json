@@ -12,6 +12,10 @@
       "require": "./dist/cjs/index.js"
     }
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pnlvfx/ffmpeg-community.git"
+  },
   "type": "module",
   "license": "MIT",
   "scripts": {
