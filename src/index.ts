@@ -80,7 +80,7 @@ const getParams = (input: string, options: FFmpegOptions) => {
 const ffmpeg = (input: string, options: FFmpegOptions) => {
   const params = getParams(input, options);
   console.log(params);
-  return new Promise((resolve, reject) => {
+  return new Promise<string>((resolve, reject) => {
     const ffmpegProcess = spawn('ffmpeg', params);
 
     ffmpegProcess.stdout.on('data', (data) => {
