@@ -4,7 +4,7 @@ import { getProgress } from './lib/progress.js';
 import { FFmpegOptions, VideoFilter } from './types/index.js';
 
 const transcode = (key: keyof FFmpegOptions, value: string | boolean | number | VideoFilter): string[] => {
-  if (key === 'output' || key === 'force') throw new Error('Unhandled key');
+  if (key === 'output' || key === 'override') throw new Error('Unhandled key');
   if (key === 'duration') {
     return ['-t', value.toString()];
   }
@@ -39,14 +39,14 @@ const transcode = (key: keyof FFmpegOptions, value: string | boolean | number | 
 
 const getParams = (input: string, options: FFmpegOptions) => {
   const params = [];
-  if (options.force) {
+  if (options.override) {
     params.push('-y');
   }
   params.push('-i', input);
   const arr = Object.entries(options);
   for (const [k, value] of arr) {
     const key = k as keyof FFmpegOptions;
-    if (key === 'output' || key === 'force') {
+    if (key === 'output' || key === 'override') {
       continue;
     }
     const p = transcode(key, value);

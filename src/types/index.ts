@@ -11,7 +11,7 @@ export interface VideoFilter {
 }
 
 export interface FFmpegOptions {
-  force?: boolean;
+  override?: boolean;
   output: string;
   duration?: number;
   codecAudio?: 'copy';

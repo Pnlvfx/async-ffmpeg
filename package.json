@@ -1,7 +1,7 @@
 {
-  "name": "ffmpeg-community",
-  "description": "Node interaction with ffmpeg in node.js style.",
-  "version": "2023.8.29",
+  "name": "async-ffmpeg",
+  "description": "Node interaction with ffmpeg in node.js promise style.",
+  "version": "2023.8.31",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Pnlvfx/ffmpeg-community.git"
+    "url": "git+https://github.com/Pnlvfx/async-ffmpeg.git"
   },
   "type": "module",
   "license": "MIT",

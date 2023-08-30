@@ -8,7 +8,7 @@ const testImageZoom = async () => {
   const image = path.join(imagepath, images[0]);
   const output = path.join(imagepath, '..', 'output', 'output.mp4');
   const video = await ffmpeg(image, {
-    force: true,
+    override: true,
     loop: 1,
     framerate: 25,
     videoFilter: `zoompan=z='min(zoom+0.0015,1.5)':d=125:s=1080x1920`,
