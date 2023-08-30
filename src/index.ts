@@ -30,6 +30,10 @@ const transcode = (key: keyof FFmpegOptions, value: string | boolean | number | 
     if (typeof value !== 'string') throw new Error('pixelFormat should be typeof string!');
     return ['-pix_fmt', value];
   }
+  if (key === 'map') {
+    if (typeof value !== 'string') throw new Error('map should be typeof string!');
+    return ['-map', value];
+  }
   return [];
 };
 

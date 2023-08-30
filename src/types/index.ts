@@ -20,4 +20,5 @@ export interface FFmpegOptions {
   videoFilter?: string;
   codecVideo?: 'libx264';
   pixelFormat?: 'yuv420p';
+  map?: string;
 }
