@@ -1,10 +1,14 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { spawn } from 'node:child_process';
 import { getProgress } from './lib/progress.js';
-import { FFmpegOptions, VideoFilter } from './types/index.js';
+import { FFmpegOptions, StartTime } from './types/index.js';
 
-const transcode = (key: keyof FFmpegOptions, value: string | boolean | number | VideoFilter): string[] => {
+const transcode = (key: keyof FFmpegOptions, value: string | boolean | number | StartTime | string[]): string[] => {
   if (key === 'output' || key === 'override') throw new Error('Unhandled key');
+  if (key === 'input') {
+    if (typeof value !== 'string') throw new Error('input should be typeof string!');
+    return ['-i', value];
+  }
   if (key === 'duration') {
     return ['-t', value.toString()];
   }
@@ -31,8 +35,18 @@ const transcode = (key: keyof FFmpegOptions, value: string | boolean | number | 
     return ['-pix_fmt', value];
   }
   if (key === 'map') {
-    if (typeof value !== 'string') throw new Error('map should be typeof string!');
-    return ['-map', value];
+    if (typeof value === 'string') {
+      return ['-map', value];
+    } else if (Array.isArray(value)) {
+      const arr = [];
+      for (const v of value) {
+        arr.push('-map', v);
+      }
+      return arr;
+    } else throw new Error('map should be typeof string or an array of strings!');
+  }
+  if (key === 'videoFrames') {
+    return [key, value.toString()];
   }
   return [];
 };
@@ -42,11 +56,21 @@ const getParams = (input: string, options: FFmpegOptions) => {
   if (options.override) {
     params.push('-y');
   }
+  if (options.inputSeeking) {
+    // MAKE IT BEFORE THE -i TO START FROM THE SELECTED INPUT SEEKING
+    const { hours, milliseconds, minutes, seconds } = options.inputSeeking;
+    params.push('-ss', `${hours || '00'}:${minutes || '00'}:${seconds || '00'}:${milliseconds || '000'}`);
+  }
   params.push('-i', input);
+  if (options.outputSeeking) {
+    // MAKE IT BEFORE AFTER -i TO STOP ON THE SELECTED OUTPUT SEEKING
+    const { hours, milliseconds, minutes, seconds } = options.outputSeeking;
+    params.push('-ss', `${hours || '00'}:${minutes || '00'}:${seconds || '00'}:${milliseconds || '000'}`);
+  }
   const arr = Object.entries(options);
   for (const [k, value] of arr) {
     const key = k as keyof FFmpegOptions;
-    if (key === 'output' || key === 'override') {
+    if (key === 'output' || key === 'override' || key === 'inputSeeking' || key === 'outputSeeking') {
       continue;
     }
     const p = transcode(key, value);
