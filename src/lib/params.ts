@@ -1,16 +1,29 @@
-/* eslint-disable sonarjs/prefer-single-boolean-return */
 /* eslint-disable sonarjs/cognitive-complexity */
 import { FFmpegParams, StartTime } from '../types';
 
 type Value = string | boolean | number | StartTime | string[];
 
 function isStartTime(obj: Value): obj is StartTime {
-  if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean') return false;
+  if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean' || Array.isArray(obj)) return false;
   if ('hours' in obj) return true;
   if ('minutes' in obj) return true;
   if ('seconds' in obj) return true;
   if ('milliseconds' in obj) return true;
+  for (const [k, value] of Object.entries(obj)) {
+    const key = k as keyof StartTime;
+    if (key === 'milliseconds') {
+      if (value.toString().length > 3) throw new Error('Invalid milliseconds format! Maximum 3 numbers, example: 000');
+    } else if (value.toString().length > 2) throw new Error('Invalid -ss format, it should contain maximum two numbers, example: 01');
+  }
   return false;
+}
+
+function formatTimeUnit(length: number, unit?: number) {
+  if (unit) {
+    const unitStr = unit.toString();
+    return unitStr.length === length ? unitStr : '0'.repeat(length - unitStr.length) + unitStr;
+  }
+  return '0'.repeat(length);
 }
 
 const transcode = (key: keyof FFmpegParams, value: Value): string[] => {
@@ -20,7 +33,11 @@ const transcode = (key: keyof FFmpegParams, value: Value): string[] => {
   if (key === 'inputSeeking') {
     if (!isStartTime(value)) throw new Error('input should be typeof object!');
     const { hours, milliseconds, minutes, seconds } = value;
-    return ['-ss', `${hours || '00'}:${minutes || '00'}:${seconds || '00'}:${milliseconds || '000'}`];
+    const fixedHours = formatTimeUnit(2, hours);
+    const fixedMinutes = formatTimeUnit(2, minutes);
+    const fixedSeconds = formatTimeUnit(2, seconds);
+    const fixedMs = formatTimeUnit(3, milliseconds);
+    return ['-ss', `${fixedHours}:${fixedMinutes}:${fixedSeconds}:${fixedMs}`];
   }
   if (key === 'input') {
     if (typeof value === 'string') {
@@ -40,7 +57,11 @@ const transcode = (key: keyof FFmpegParams, value: Value): string[] => {
   if (key === 'outputSeeking') {
     if (!isStartTime(value)) throw new Error('input should be typeof object!');
     const { hours, milliseconds, minutes, seconds } = value;
-    return ['-ss', `${hours || '00'}:${minutes || '00'}:${seconds || '00'}:${milliseconds || '000'}`];
+    const fixedHours = formatTimeUnit(2, hours);
+    const fixedMinutes = formatTimeUnit(2, minutes);
+    const fixedSeconds = formatTimeUnit(2, seconds);
+    const fixedMs = formatTimeUnit(3, milliseconds);
+    return ['-ss', `${fixedHours}:${fixedMinutes}:${fixedSeconds}:${fixedMs}`];
   }
   if (key === 'duration') {
     return ['-t', value.toString()];
