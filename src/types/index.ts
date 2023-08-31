@@ -39,7 +39,7 @@ export interface FFmpegParams {
   duration?: number;
 
   /** Audio codec to use. Equivalent to the `-c:a` option in FFmpeg. */
-  codecAudio?: 'copy';
+  codecAudio?: 'copy' | 'aac';
 
   /** Number of times to loop the input. Equivalent to the `-loop` option in FFmpeg. */
   loop?: number;

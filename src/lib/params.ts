@@ -95,5 +95,5 @@ export const getParams = (options: FFmpegParams) => {
     const p = transcode(key, value);
     params.push(...p);
   }
-  return [...params, options.output];
+  return params;
 };

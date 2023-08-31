@@ -6,7 +6,9 @@ import { FFmpegParams } from './types/index.js';
 
 const ffmpeg = (params: FFmpegParams) => {
   return new Promise<string>((resolve, reject) => {
-    const ffmpegProcess = spawn('ffmpeg', getParams(params));
+    const ffmpegParams = getParams(params);
+    console.log(ffmpegParams);
+    const ffmpegProcess = spawn('ffmpeg', ffmpegParams);
 
     ffmpegProcess.stdout.on('data', (data) => {
       console.log(`stdout: ${data}`);
