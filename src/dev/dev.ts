@@ -7,7 +7,8 @@ const testImageZoom = async () => {
   const images = await fs.promises.readdir(imagepath);
   const image = path.join(imagepath, images[0]);
   const output = path.join(imagepath, '..', 'output', 'output.mp4');
-  const video = await ffmpeg(image, {
+  const video = await ffmpeg({
+    input: image,
     override: true,
     loop: 1,
     framerate: 25,

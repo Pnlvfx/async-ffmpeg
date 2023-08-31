@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // export interface Zoompan {
 //   zoomIncrement: number;
 //   maxZoom: number;
@@ -20,9 +21,12 @@ export interface StartTime {
 /**
  * Options for configuring FFmpeg commands.
  */
-export interface FFmpegOptions {
+export interface FFmpegParams {
   /** Input file path. Equivalent to the `-i` option in FFmpeg. */
-  input?: string;
+  input: string | string[];
+
+  /** audio-only input path. Equivalent to the `-i` option in FFmpeg. */
+  audio?: string;
 
   /** Whether to override the output file if it already exists. */
   override?: boolean;
