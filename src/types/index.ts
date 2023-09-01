@@ -38,8 +38,14 @@ export interface FFmpegParams {
   /** Duration of the output video in seconds. Equivalent to the `-t` option in FFmpeg. */
   duration?: number;
 
+  /** Codec to use. Equivalent to the `-c` option in FFmpeg. */
+  codec?: 'copy';
+
   /** Audio codec to use. Equivalent to the `-c:a` option in FFmpeg. */
   codecAudio?: 'copy' | 'aac';
+
+  /** Video codec to use. Equivalent to the `-c:v` option in FFmpeg. */
+  codecVideo?: 'libx264';
 
   /** Number of times to loop the input. Equivalent to the `-loop` option in FFmpeg. */
   loop?: number;
@@ -49,9 +55,6 @@ export interface FFmpegParams {
 
   /** Video filter to apply. Equivalent to the `-vf` option in FFmpeg. */
   videoFilter?: string;
-
-  /** Video codec to use. Equivalent to the `-c:v` option in FFmpeg. */
-  codecVideo?: 'libx264';
 
   /** Pixel format of the output video. Equivalent to the `-pix_fmt` option in FFmpeg. */
   pixelFormat?: 'yuv420p';
@@ -67,4 +70,6 @@ export interface FFmpegParams {
 
   /** set the number of video frames to record. Equivalent to the `-vframes` option in FFmpeg. */
   videoFrames?: number;
+
+  extra?: string[];
 }

@@ -66,19 +66,23 @@ const transcode = (key: keyof FFmpegParams, value: Value): string[] => {
   if (key === 'duration') {
     return ['-t', value.toString()];
   }
+  if (key === 'codec') {
+    if (typeof value !== 'string') throw new Error('codec should be typeof string!');
+    return ['-c', value];
+  }
   if (key === 'codecAudio') {
     if (typeof value !== 'string') throw new Error('codecAudio should be typeof string!');
     return ['-c:a', value];
+  }
+  if (key === 'codecVideo') {
+    if (typeof value !== 'string') throw new Error('codecVideo should be typeof string!');
+    return ['-c:v', value];
   }
   if (key === 'loop') {
     return ['-loop', value.toString()];
   }
   if (key === 'framerate') {
     return ['-framerate', value.toString()];
-  }
-  if (key === 'codecVideo') {
-    if (typeof value !== 'string') throw new Error('codecVideo should be typeof string!');
-    return ['-c:v', value];
   }
   if (key === 'videoFilter') {
     if (typeof value !== 'string') throw new Error('videoFilter should be typeof string!');
@@ -101,6 +105,10 @@ const transcode = (key: keyof FFmpegParams, value: Value): string[] => {
   }
   if (key === 'videoFrames') {
     return [key, value.toString()];
+  }
+  if (key === 'extra') {
+    if (!Array.isArray(value)) throw new Error('output should be typeof string!');
+    return value;
   }
   if (key === 'output') {
     if (typeof value !== 'string') throw new Error('output should be typeof string!');
