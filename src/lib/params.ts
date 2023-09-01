@@ -37,7 +37,7 @@ const transcode = (key: keyof FFmpegParams, value: Value): string[] => {
     const fixedMinutes = formatTimeUnit(2, minutes);
     const fixedSeconds = formatTimeUnit(2, seconds);
     const fixedMs = formatTimeUnit(3, milliseconds);
-    return ['-ss', `${fixedHours}:${fixedMinutes}:${fixedSeconds}:${fixedMs}`];
+    return ['-ss', `${fixedHours}:${fixedMinutes}:${fixedSeconds}.${fixedMs}`];
   }
   if (key === 'input') {
     if (typeof value === 'string') {
@@ -61,7 +61,7 @@ const transcode = (key: keyof FFmpegParams, value: Value): string[] => {
     const fixedMinutes = formatTimeUnit(2, minutes);
     const fixedSeconds = formatTimeUnit(2, seconds);
     const fixedMs = formatTimeUnit(3, milliseconds);
-    return ['-ss', `${fixedHours}:${fixedMinutes}:${fixedSeconds}:${fixedMs}`];
+    return ['-ss', `${fixedHours}:${fixedMinutes}:${fixedSeconds}.${fixedMs}`];
   }
   if (key === 'duration') {
     return ['-t', value.toString()];
