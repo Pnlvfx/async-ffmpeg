@@ -5,6 +5,9 @@ export const startCommand = async (command: string, params: string[]) => {
   return new Promise<void>((resolve, reject) => {
     const ffmpegProcess = spawn(command, params);
 
+    let wasResolved = false;
+    let stderr = '';
+
     ffmpegProcess.on('error', (err) => {
       reject(err);
     });
@@ -13,19 +16,29 @@ export const startCommand = async (command: string, params: string[]) => {
       console.log(`stdout: ${data}`);
     });
 
-    let error = '';
-
     ffmpegProcess.stderr.on('data', (data) => {
       const stderrData = data.toString();
-      error += stderrData;
+      stderr += stderrData;
       getProgress(stderrData);
     });
 
     ffmpegProcess.on('close', (code) => {
+      if (wasResolved) return;
       if (code === 0) {
         resolve();
+        wasResolved = true;
       } else {
-        reject(error);
+        reject(stderr);
+      }
+    });
+
+    ffmpegProcess.on('exit', (code) => {
+      if (wasResolved) return;
+      if (code === 0) {
+        resolve();
+        wasResolved = true;
+      } else {
+        reject(stderr);
       }
     });
   });

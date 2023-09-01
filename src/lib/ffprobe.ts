@@ -61,19 +61,19 @@ export const ffprobe = async (file: string | Stream) => {
     const src = isStream ? 'pipe:0' : file;
     const ffprobeProcess = spawn('ffprobe', ['-show_streams', '-show_format', src], { windowsHide: true });
 
+    let stdout = '';
+    let stderr = '';
+
     ffprobeProcess.on('error', (err) => {
       reject(err);
     });
-
-    let stdout = '';
-    let error = '';
 
     ffprobeProcess.stdout.on('data', (data) => {
       stdout += data;
     });
 
     ffprobeProcess.stderr.on('data', (data) => {
-      error += data;
+      stderr += data;
     });
 
     ffprobeProcess.on('close', (code) => {
@@ -104,7 +104,7 @@ export const ffprobe = async (file: string | Stream) => {
           }
         }
         resolve(data);
-      } else reject(error);
+      } else reject(stderr.toString());
     });
   });
 };
