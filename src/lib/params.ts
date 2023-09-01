@@ -1,43 +1,47 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 /* eslint-disable sonarjs/cognitive-complexity */
-import { FFmpegParams, StartTime } from '../types';
+import { FFmpegParams, Time } from '../types';
 
-type Value = string | boolean | number | StartTime | string[];
+type Value = string | boolean | number | Time | string[];
 
-function isStartTime(obj: Value): obj is StartTime {
+const isStartTime = (obj: Value): obj is Time => {
   if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean' || Array.isArray(obj)) return false;
   if ('hours' in obj) return true;
   if ('minutes' in obj) return true;
   if ('seconds' in obj) return true;
   if ('milliseconds' in obj) return true;
   for (const [k, value] of Object.entries(obj)) {
-    const key = k as keyof StartTime;
+    const key = k as keyof Time;
     if (key === 'milliseconds') {
       if (value.toString().length > 3) throw new Error('Invalid milliseconds format! Maximum 3 numbers, example: 000');
     } else if (value.toString().length > 2) throw new Error('Invalid -ss format, it should contain maximum two numbers, example: 01');
   }
   return false;
-}
+};
 
-function formatTimeUnit(length: number, unit?: number) {
+const formatTimeUnit = (length: number, unit?: number) => {
   if (unit) {
     const unitStr = unit.toString();
     return unitStr.length === length ? unitStr : '0'.repeat(length - unitStr.length) + unitStr;
   }
   return '0'.repeat(length);
-}
+};
 
 const transcode = (key: keyof FFmpegParams, value: Value): string[] => {
   if (key === 'override') {
     return ['-y'];
   }
   if (key === 'inputSeeking') {
-    if (!isStartTime(value)) throw new Error('input should be typeof object!');
-    const { hours, milliseconds, minutes, seconds } = value;
-    const fixedHours = formatTimeUnit(2, hours);
-    const fixedMinutes = formatTimeUnit(2, minutes);
-    const fixedSeconds = formatTimeUnit(2, seconds);
-    const fixedMs = formatTimeUnit(3, milliseconds);
-    return ['-ss', `${fixedHours}:${fixedMinutes}:${fixedSeconds}.${fixedMs}`];
+    if (isStartTime(value)) {
+      const { hours, milliseconds, minutes, seconds } = value;
+      const fixedHours = formatTimeUnit(2, hours);
+      const fixedMinutes = formatTimeUnit(2, minutes);
+      const fixedSeconds = formatTimeUnit(2, seconds);
+      const fixedMs = formatTimeUnit(3, milliseconds);
+      return ['-ss', `${fixedHours}:${fixedMinutes}:${fixedSeconds}.${fixedMs}`];
+    } else if (typeof value === 'string') {
+      return ['-ss', value];
+    } else throw new Error('ss should be typeof object or string!');
   }
   if (key === 'input') {
     if (typeof value === 'string') {
@@ -55,16 +59,28 @@ const transcode = (key: keyof FFmpegParams, value: Value): string[] => {
     return ['-i', value];
   }
   if (key === 'outputSeeking') {
-    if (!isStartTime(value)) throw new Error('input should be typeof object!');
-    const { hours, milliseconds, minutes, seconds } = value;
-    const fixedHours = formatTimeUnit(2, hours);
-    const fixedMinutes = formatTimeUnit(2, minutes);
-    const fixedSeconds = formatTimeUnit(2, seconds);
-    const fixedMs = formatTimeUnit(3, milliseconds);
-    return ['-ss', `${fixedHours}:${fixedMinutes}:${fixedSeconds}.${fixedMs}`];
+    if (isStartTime(value)) {
+      const { hours, milliseconds, minutes, seconds } = value;
+      const fixedHours = formatTimeUnit(2, hours);
+      const fixedMinutes = formatTimeUnit(2, minutes);
+      const fixedSeconds = formatTimeUnit(2, seconds);
+      const fixedMs = formatTimeUnit(3, milliseconds);
+      return ['-ss', `${fixedHours}:${fixedMinutes}:${fixedSeconds}.${fixedMs}`];
+    } else if (typeof value === 'string') {
+      return ['-ss', value];
+    } else throw new Error('ss should be typeof object or string!');
   }
   if (key === 'duration') {
-    return ['-t', value.toString()];
+    if (isStartTime(value)) {
+      const { hours, milliseconds, minutes, seconds } = value;
+      const fixedHours = formatTimeUnit(2, hours);
+      const fixedMinutes = formatTimeUnit(2, minutes);
+      const fixedSeconds = formatTimeUnit(2, seconds);
+      const fixedMs = formatTimeUnit(3, milliseconds);
+      return ['-ss', `${fixedHours}:${fixedMinutes}:${fixedSeconds}.${fixedMs}`];
+    } else if (typeof value === 'number') {
+      return ['-ss', value.toString()];
+    } else throw new Error('ss should be typeof object or string!');
   }
   if (key === 'codec') {
     if (typeof value !== 'string') throw new Error('codec should be typeof string!');
