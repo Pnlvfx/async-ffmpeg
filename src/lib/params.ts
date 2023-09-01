@@ -104,7 +104,7 @@ const transcode = (key: keyof FFmpegParams, value: Value): string[] => {
     } else throw new Error('map should be typeof string or an array of strings!');
   }
   if (key === 'videoFrames') {
-    return [key, value.toString()];
+    return ['-vframes', value.toString()];
   }
   if (key === 'extra') {
     if (!Array.isArray(value)) throw new Error('output should be typeof string!');
