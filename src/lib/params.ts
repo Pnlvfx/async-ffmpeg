@@ -77,10 +77,10 @@ const transcode = (key: keyof FFmpegParams, value: Value): string[] => {
       const fixedMinutes = formatTimeUnit(2, minutes);
       const fixedSeconds = formatTimeUnit(2, seconds);
       const fixedMs = formatTimeUnit(3, milliseconds);
-      return ['-ss', `${fixedHours}:${fixedMinutes}:${fixedSeconds}.${fixedMs}`];
+      return ['-t', `${fixedHours}:${fixedMinutes}:${fixedSeconds}.${fixedMs}`];
     } else if (typeof value === 'number') {
-      return ['-ss', value.toString()];
-    } else throw new Error('ss should be typeof object or string!');
+      return ['-t', value.toString()];
+    } else throw new Error('duration should be typeof object or string!');
   }
   if (key === 'codec') {
     if (typeof value !== 'string') throw new Error('codec should be typeof string!');
