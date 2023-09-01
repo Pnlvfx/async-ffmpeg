@@ -63,10 +63,10 @@ export interface FFmpegParams {
   map?: string | string[];
 
   /** Seeking position in the input file. Equivalent to the `-ss` option in FFmpeg for input seeking. */
-  inputSeeking?: Time | string;
+  inputSeeking?: Time | number;
 
   /** Seeking position in the output file. Equivalent to the `-ss` option in FFmpeg for output seeking. */
-  outputSeeking?: Time | string;
+  outputSeeking?: Time | number;
 
   /** set the number of video frames to record. Equivalent to the `-vframes` option in FFmpeg. */
   videoFrames?: number;

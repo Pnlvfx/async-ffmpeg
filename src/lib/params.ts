@@ -39,8 +39,8 @@ const transcode = (key: keyof FFmpegParams, value: Value): string[] => {
       const fixedSeconds = formatTimeUnit(2, seconds);
       const fixedMs = formatTimeUnit(3, milliseconds);
       return ['-ss', `${fixedHours}:${fixedMinutes}:${fixedSeconds}.${fixedMs}`];
-    } else if (typeof value === 'string') {
-      return ['-ss', value];
+    } else if (typeof value === 'number') {
+      return ['-ss', value.toString()];
     } else throw new Error('ss should be typeof object or string!');
   }
   if (key === 'input') {
@@ -66,8 +66,8 @@ const transcode = (key: keyof FFmpegParams, value: Value): string[] => {
       const fixedSeconds = formatTimeUnit(2, seconds);
       const fixedMs = formatTimeUnit(3, milliseconds);
       return ['-ss', `${fixedHours}:${fixedMinutes}:${fixedSeconds}.${fixedMs}`];
-    } else if (typeof value === 'string') {
-      return ['-ss', value];
+    } else if (typeof value === 'number') {
+      return ['-ss', value.toString()];
     } else throw new Error('ss should be typeof object or string!');
   }
   if (key === 'duration') {
