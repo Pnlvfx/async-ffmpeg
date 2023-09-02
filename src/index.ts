@@ -13,3 +13,5 @@ const ffmpeg = async (params: FFmpegParams) => {
 ffmpeg.ffprobe = ffprobe;
 
 export default ffmpeg;
+
+export { parseDuration, parseDurationNum } from './lib/time.js';

@@ -71,5 +71,6 @@ export interface FFmpegParams {
   /** set the number of video frames to record. Equivalent to the `-vframes` option in FFmpeg. */
   videoFrames?: number;
 
+  /** Add any extra parameter. Don't need to be used at the end.*/
   extra?: string[];
 }
