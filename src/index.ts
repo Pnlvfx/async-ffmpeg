@@ -14,4 +14,4 @@ ffmpeg.ffprobe = ffprobe;
 
 export default ffmpeg;
 
-export { parseDuration, parseDurationNum } from './lib/time.js';
+// export { parseDuration, parseDurationNum } from './lib/time.js';
