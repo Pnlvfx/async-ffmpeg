@@ -1,10 +1,10 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { FFmpegParams, Time } from '../types';
 
-type Value = string | boolean | number | Time | string[];
+type Value = string | boolean | number | Time | string[] | undefined;
 
 const isStartTime = (obj: Value): obj is Time => {
-  if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean' || Array.isArray(obj)) return false;
+  if (!obj || typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean' || Array.isArray(obj)) return false;
   if ('hours' in obj) return true;
   if ('minutes' in obj) return true;
   if ('seconds' in obj) return true;
@@ -94,9 +94,11 @@ const transcode = (key: keyof FFmpegParams, value: Value): string[] => {
     return ['-c:v', value];
   }
   if (key === 'loop') {
+    if (typeof value !== 'number') throw new Error('loop should be typeof number!');
     return ['-loop', value.toString()];
   }
   if (key === 'framerate') {
+    if (typeof value !== 'number') throw new Error('framerate should be typeof number!');
     return ['-framerate', value.toString()];
   }
   if (key === 'videoFilter') {
@@ -119,6 +121,7 @@ const transcode = (key: keyof FFmpegParams, value: Value): string[] => {
     } else throw new Error('map should be typeof string or an array of strings!');
   }
   if (key === 'videoFrames') {
+    if (typeof value !== 'number') throw new Error('video-frames should be typeof number!');
     return ['-vframes', value.toString()];
   }
   if (key === 'extra') {
