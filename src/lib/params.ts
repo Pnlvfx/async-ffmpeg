@@ -1,10 +1,10 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { FFmpegParams, Time } from '../types';
 
-type Value = string | boolean | number | Time | string[] | undefined;
+type Value = string | boolean | number | Time | string[];
 
 const isStartTime = (obj: Value): obj is Time => {
-  if (!obj || typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean' || Array.isArray(obj)) return false;
+  if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean' || Array.isArray(obj)) return false;
   if ('hours' in obj) return true;
   if ('minutes' in obj) return true;
   if ('seconds' in obj) return true;
@@ -26,11 +26,11 @@ const formatTimeUnit = (length: number, unit?: number) => {
   return '0'.repeat(length);
 };
 
-const transcode = (key: keyof FFmpegParams, value: Value): string[] => {
+const transcode = (key: keyof FFmpegParams, value?: Value | undefined): string[] => {
   if (key === 'override') {
     return ['-y'];
   }
-  if (key === 'inputSeeking') {
+  if (key === 'inputSeeking' && value) {
     if (isStartTime(value)) {
       const { hours, milliseconds, minutes, seconds } = value;
       const fixedHours = formatTimeUnit(2, hours);
@@ -57,7 +57,7 @@ const transcode = (key: keyof FFmpegParams, value: Value): string[] => {
     if (typeof value !== 'string') throw new Error('audio should be typeof string!');
     return ['-i', value];
   }
-  if (key === 'outputSeeking') {
+  if (key === 'outputSeeking' && value) {
     if (isStartTime(value)) {
       const { hours, milliseconds, minutes, seconds } = value;
       const fixedHours = formatTimeUnit(2, hours);
@@ -69,7 +69,7 @@ const transcode = (key: keyof FFmpegParams, value: Value): string[] => {
       return ['-ss', value.toString()];
     } else throw new Error('ss should be typeof object or string!');
   }
-  if (key === 'duration') {
+  if (key === 'duration' && value) {
     if (isStartTime(value)) {
       const { hours, milliseconds, minutes, seconds } = value;
       const fixedHours = formatTimeUnit(2, hours);
