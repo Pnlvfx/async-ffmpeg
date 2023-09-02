@@ -1,23 +1,20 @@
 import ffmpeg from '../index.js';
 import path from 'node:path';
 import fs from 'node:fs';
-import { parseDurationNum } from '../lib/time.js';
+import VideoFilter from '../constants/video-filter.js';
 const imagepath = path.join(process.cwd(), 'media/images');
 
 const testImageZoom = async () => {
   const images = await fs.promises.readdir(imagepath);
   const image = path.join(imagepath, images[0]);
   const duration = Math.ceil(10.14);
-  const fixedDuration = parseDurationNum(Math.ceil(duration));
-  const zoom = 'in';
+  const zoom: 'in' | 'out' = 'in';
   //inputs up
   const framerate = 24;
   const frames = duration * framerate;
-  console.log({ frames });
   let zoomEffect;
   if (zoom === 'in') {
-    const zoomInAtCenter = `[0:v]scale=4000x8000,zoompan=z='min(zoom+0.0015,1.5)':d=${frames}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x1920`;
-    zoomEffect = zoomInAtCenter;
+    zoomEffect = VideoFilter.Zoompan.zoomInAtCenter(1080, 1920, { zoomIncrement: 0.0015, maxZoom: 1.5 });
   } else {
     const zoomOutFromCenter = `[0:v]scale=4000x8000,zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0023))':x='max(1,iw/2-(iw/zoom/2))':y='max(1,ih/2-(ih/zoom/2))':d=${frames}:s=1080x1920`;
     zoomEffect = zoomOutFromCenter;
@@ -31,7 +28,7 @@ const testImageZoom = async () => {
     videoFilter: zoomEffect,
     codecVideo: 'libx264',
     pixelFormat: 'yuv420p',
-    duration: fixedDuration,
+    duration,
     output,
   });
   const { streams } = await ffmpeg.ffprobe(video);
