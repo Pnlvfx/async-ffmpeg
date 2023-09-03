@@ -14,4 +14,6 @@ ffmpeg.ffprobe = ffprobe;
 
 export default ffmpeg;
 
+export { VideoFilter } from './constants/video-filter.js';
+
 // export { parseDuration, parseDurationNum } from './lib/time.js';
