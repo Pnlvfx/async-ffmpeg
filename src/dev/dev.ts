@@ -1,7 +1,6 @@
-import ffmpeg from '../index.js';
+import ffmpeg, { VideoFilter } from '../index.js';
 import path from 'node:path';
 import fs from 'node:fs';
-import VideoFilter from '../constants/video-filter.js';
 const imagepath = path.join(process.cwd(), 'media/images');
 
 const testImageZoom = async () => {
