@@ -1,6 +1,7 @@
 import { spawn } from 'node:child_process';
 import { getProgress } from './progress.js';
 
+/** @internal */
 export const startCommand = async (command: string, params: string[]) => {
   return new Promise<void>((resolve, reject) => {
     const ffmpegProcess = spawn(command, params);

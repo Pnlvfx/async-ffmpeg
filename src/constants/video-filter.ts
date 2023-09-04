@@ -1,3 +1,6 @@
+/**
+ * @internal
+ */
 export const VideoFilter = {
   Zoompan: {
     zoomInAtCenter: (width: number, height: number, { maxZoom = 1.5, zoomIncrement = 0.0015 } = {}) => {

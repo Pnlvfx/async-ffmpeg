@@ -1,3 +1,4 @@
+/** @internal */
 export const parseDuration = (seconds: number) => {
   if (Number.isNaN(seconds) || seconds < 0) throw new Error('Invalid duration');
   const hours = Math.floor(seconds / 3600)
@@ -15,6 +16,7 @@ export const parseDuration = (seconds: number) => {
   return `${hours}:${minutes}:${_seconds}.${milliseconds}`;
 };
 
+/** @internal */
 export const parseDurationNum = (seconds: number) => {
   if (Number.isNaN(seconds) || seconds < 0) throw new Error('Invalid duration');
   const hours = Math.floor(seconds / 3600);

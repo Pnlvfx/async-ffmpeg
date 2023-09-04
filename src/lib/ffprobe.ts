@@ -27,8 +27,10 @@ const parseFfprobeOutput = (out: string): FfprobeData => {
       }
 
       const kv = line.match(/^([^=]+)=(.*)$/);
-      if (kv?.at(1)) {
-        (data2 as any)[kv[1]] = !kv[1].startsWith('TAG:') && /^\d+(\.\d+)?$/.test(kv[2]) ? Number(kv[2]) : kv[2];
+      const rgx1 = kv?.at(1);
+      const rgx2 = kv?.at(2);
+      if (rgx1 && rgx2) {
+        (data2 as any)[rgx1] = !rgx1.startsWith('TAG:') && /^\d+(\.\d+)?$/.test(rgx2) ? Number(rgx2) : rgx2;
       }
 
       line = lines.shift();
@@ -55,6 +57,7 @@ const parseFfprobeOutput = (out: string): FfprobeData => {
   return data;
 };
 
+/** @internal */
 export const ffprobe = async (file: string | Stream) => {
   return new Promise<FfprobeData>((resolve, reject) => {
     const isStream = file instanceof Stream;
@@ -86,7 +89,7 @@ export const ffprobe = async (file: string | Stream) => {
               target.tags = target.tags || {};
 
               for (const tagKey of legacyTagKeys) {
-                target.tags[tagKey.slice(4)] = target[tagKey];
+                (target.tags as any)[tagKey.slice(4)] = target[tagKey];
                 delete target[tagKey];
               }
             }
@@ -98,7 +101,7 @@ export const ffprobe = async (file: string | Stream) => {
             target.disposition = target.disposition || {};
 
             for (const dispositionKey of legacyDispositionKeys) {
-              target.disposition[dispositionKey.slice(12)] = target[dispositionKey];
+              (target.disposition as any)[dispositionKey.slice(12)] = target[dispositionKey];
               delete target[dispositionKey];
             }
           }

@@ -10,6 +10,14 @@
       "types": "./dist/esm/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
+    },
+    "./internal/*": {
+      "import": "./dist/esm/*",
+      "require": "./dist/cjs/*"
+    },
+    "./*": {
+      "import": "./*",
+      "require": "./*"
     }
   },
   "repository": {

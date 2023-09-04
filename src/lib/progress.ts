@@ -1,3 +1,4 @@
+/** @internal */
 export const getProgress = (stderrData: string) => {
   calculateProgress(stderrData);
 };

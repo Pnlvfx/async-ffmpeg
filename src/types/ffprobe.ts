@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface FfprobeData {
   streams: FfprobeStream[];
   format: FfprobeFormat;
-  chapters: any[];
+  chapters: unknown[];
 }
 
 export interface FfprobeStream {
-  [key: string]: any;
+  [key: string]: unknown;
   index: number;
   codec_name?: string | undefined;
   codec_long_name?: string | undefined;
@@ -56,7 +55,7 @@ export interface FfprobeStream {
 }
 
 export interface FfprobeStreamDisposition {
-  [key: string]: any;
+  [key: string]: unknown;
   default?: number | undefined;
   dub?: number | undefined;
   original?: number | undefined;
@@ -72,7 +71,7 @@ export interface FfprobeStreamDisposition {
 }
 
 export interface FfprobeFormat {
-  [key: string]: any;
+  [key: string]: unknown;
   filename?: string | undefined;
   nb_streams?: number | undefined;
   nb_programs?: number | undefined;

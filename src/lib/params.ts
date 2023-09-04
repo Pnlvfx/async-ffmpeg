@@ -135,6 +135,7 @@ const transcode = (key: keyof FFmpegParams, value?: Value | undefined): string[]
   return [];
 };
 
+/** @internal */
 export const getParams = (options: FFmpegParams) => {
   const params = [];
   for (const [k, value] of Object.entries(options)) {
