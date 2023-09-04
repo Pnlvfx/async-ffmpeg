@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/cognitive-complexity */
-import { FFmpegParams, Time } from '../types';
+import { FFmpegParams, Time } from '../types/index.js';
 
 type Value = string | boolean | number | Time | string[];
 

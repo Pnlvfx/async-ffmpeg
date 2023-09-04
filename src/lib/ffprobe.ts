@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { spawn } from 'node:child_process';
 import { Stream } from 'node:stream';
-import { FfprobeData, FfprobeFormat, FfprobeStream } from '../types/ffprobe';
+import { FfprobeData, FfprobeFormat, FfprobeStream } from '../types/ffprobe.js';
 
 const parseFfprobeOutput = (out: string): FfprobeData => {
   let lines = out.split(/\r\n|\r|\n/);
