@@ -27,9 +27,6 @@ export interface FFmpegParams {
   /** audio-only input path. Equivalent to the `-i` option in FFmpeg. */
   audio?: string;
 
-  /** Whether to override the output file if it already exists. */
-  override?: boolean;
-
   /** Output file path. This is a required field. */
 
   output: string;
@@ -41,10 +38,10 @@ export interface FFmpegParams {
   codec?: 'copy';
 
   /** Audio codec to use. Equivalent to the `-c:a` option in FFmpeg. */
-  codecAudio?: 'copy' | 'aac';
+  audioCodec?: 'copy' | 'aac' | 'libmp3lame';
 
   /** Video codec to use. Equivalent to the `-c:v` option in FFmpeg. */
-  codecVideo?: 'libx264';
+  videoCodec?: 'libx264';
 
   /** Number of times to loop the input. Equivalent to the `-loop` option in FFmpeg. */
   loop?: number;
@@ -72,4 +69,7 @@ export interface FFmpegParams {
 
   /** Add any extra parameter. Don't need to be used at the end.*/
   extra?: string[];
+
+  /** Whetever process or not the video. Default: false.*/
+  noVideo?: boolean;
 }

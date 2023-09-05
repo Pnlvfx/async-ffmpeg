@@ -27,9 +27,6 @@ const formatTimeUnit = (length: number, unit?: number) => {
 };
 
 const transcode = (key: keyof FFmpegParams, value?: Value | undefined): string[] => {
-  if (key === 'override') {
-    return ['-y'];
-  }
   if (key === 'inputSeeking' && value) {
     if (isStartTime(value)) {
       const { hours, milliseconds, minutes, seconds } = value;
@@ -85,11 +82,11 @@ const transcode = (key: keyof FFmpegParams, value?: Value | undefined): string[]
     if (typeof value !== 'string') throw new Error('codec should be typeof string!');
     return ['-c', value];
   }
-  if (key === 'codecAudio') {
+  if (key === 'audioCodec') {
     if (typeof value !== 'string') throw new Error('codecAudio should be typeof string!');
     return ['-c:a', value];
   }
-  if (key === 'codecVideo') {
+  if (key === 'videoCodec') {
     if (typeof value !== 'string') throw new Error('codecVideo should be typeof string!');
     return ['-c:v', value];
   }
@@ -132,12 +129,15 @@ const transcode = (key: keyof FFmpegParams, value?: Value | undefined): string[]
     if (typeof value !== 'string') throw new Error('output should be typeof string!');
     return [value];
   }
+  if (key === 'noVideo' && value === true) {
+    return ['-vn'];
+  }
   return [];
 };
 
 /** @internal */
 export const getParams = (options: FFmpegParams) => {
-  const params = [];
+  const params = ['-y'];
   for (const [k, value] of Object.entries(options)) {
     const key = k as keyof FFmpegParams;
     const p = transcode(key, value);

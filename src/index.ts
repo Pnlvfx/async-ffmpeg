@@ -5,7 +5,7 @@ import { FFmpegParams } from './types/index.js';
 
 const ffmpeg = async (params: FFmpegParams) => {
   const ffmpegParams = getParams(params);
-  console.log(ffmpegParams);
+  console.log(...ffmpegParams);
   await startCommand('ffmpeg', ffmpegParams);
   return params.output;
 };
