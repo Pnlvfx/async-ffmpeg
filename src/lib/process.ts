@@ -1,5 +1,4 @@
 import { spawn } from 'node:child_process';
-import { getProgress } from './progress.js';
 
 /** @internal */
 export const startCommand = async (command: string, params: string[]) => {
@@ -13,14 +12,14 @@ export const startCommand = async (command: string, params: string[]) => {
       reject(err);
     });
 
-    ffmpegProcess.stdout.on('data', (data) => {
-      console.log(`stdout: ${data}`);
-    });
+    // ffmpegProcess.stdout.on('data', (data) => {
+    //   console.log(`stdout: ${data}`);
+    // });
 
     ffmpegProcess.stderr.on('data', (data) => {
       const stderrData = data.toString();
       stderr += stderrData;
-      getProgress(stderrData);
+      // getProgress(stderrData);
     });
 
     ffmpegProcess.on('close', (code) => {
