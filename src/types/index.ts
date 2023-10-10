@@ -41,7 +41,7 @@ export interface FFmpegParams {
   audioCodec?: 'copy' | 'aac' | 'libmp3lame';
 
   /** Video codec to use. Equivalent to the `-c:v` option in FFmpeg. */
-  videoCodec?: 'libx264';
+  videoCodec?: 'copy' | 'libx264';
 
   /** Number of times to loop the input. Equivalent to the `-loop` option in FFmpeg. */
   loop?: number;
