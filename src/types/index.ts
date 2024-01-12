@@ -43,6 +43,9 @@ export interface FFmpegParams {
   /** Video codec to use. Equivalent to the `-c:v` option in FFmpeg. */
   videoCodec?: 'copy' | 'libx264';
 
+  /** Audio bitrate in kbps for the output audio. Equivalent to the `-b:a` option in FFmpeg. */
+  audioBitrate?: '64k' | '96k' | '128k' | '192k' | '256k' | '320k' | 64 | 96 | 128 | 192 | 256 | 320;
+
   /** Number of times to loop the input. Equivalent to the `-loop` option in FFmpeg. */
   loop?: number;
 

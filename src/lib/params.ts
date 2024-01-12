@@ -86,6 +86,10 @@ const transcode = (key: keyof FFmpegParams, value?: Value | undefined): string[]
     if (typeof value !== 'string') throw new Error('codecAudio should be typeof string!');
     return ['-c:a', value];
   }
+  if (key === 'audioBitrate') {
+    if (typeof value !== 'string' || typeof value !== 'number') throw new Error('audioBitrate should be typeof string or number!');
+    return ['-b:a', value];
+  }
   if (key === 'videoCodec') {
     if (typeof value !== 'string') throw new Error('codecVideo should be typeof string!');
     return ['-c:v', value];
