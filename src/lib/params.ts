@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/cognitive-complexity */
-import { FFmpegParams, Time } from '../types/index.js';
+import type { AudioBitrate, FFmpegParams, Time } from '../types/index.js';
 
 type Value = string | boolean | number | Time | string[];
 
@@ -16,6 +16,10 @@ const isStartTime = (obj: Value): obj is Time => {
     } else if (value.toString().length > 2) throw new Error('Invalid -ss format, it should contain maximum two numbers, example: 01');
   }
   return false;
+};
+
+export const isValidAudioBitrate = (value: string | number): value is AudioBitrate => {
+  return (typeof value === 'string' && value.includes('k')) || typeof value === 'number';
 };
 
 const formatTimeUnit = (length: number, unit?: number) => {
@@ -87,8 +91,11 @@ const transcode = (key: keyof FFmpegParams, value?: Value | undefined): string[]
     return ['-c:a', value];
   }
   if (key === 'audioBitrate') {
-    if (typeof value !== 'string' || typeof value !== 'number') throw new Error('audioBitrate should be typeof string or number!');
-    return ['-b:a', value];
+    if (typeof value === 'string') {
+      return ['-b:a', value];
+    } else if (typeof value === 'number') {
+      return ['-b:a', value.toString() + 'k'];
+    } else throw new Error('audioBitrate should be typeof string or number!');
   }
   if (key === 'videoCodec') {
     if (typeof value !== 'string') throw new Error('codecVideo should be typeof string!');
@@ -130,13 +137,17 @@ const transcode = (key: keyof FFmpegParams, value?: Value | undefined): string[]
     return value;
   }
   if (key === 'output') {
-    if (typeof value !== 'string') throw new Error('output should be typeof string!');
+    if (typeof value !== 'string') throw new Error('Output should be a string!');
     return [value];
   }
   if (key === 'noVideo' && value === true) {
     return ['-vn'];
   }
-  return [];
+  if (key === 'outputFormat') {
+    if (typeof value !== 'string') throw new Error('Output format should be a string.');
+    return ['-f', value];
+  }
+  throw new Error('Unsupported command provided, please open an issue if you think that this command should exist.');
 };
 
 /** @internal */

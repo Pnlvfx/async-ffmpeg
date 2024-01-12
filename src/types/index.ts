@@ -17,6 +17,8 @@ export interface Time {
   milliseconds?: number;
 }
 
+export type AudioBitrate = '64k' | '96k' | '128k' | '192k' | '256k' | '320k' | 64 | 96 | 128 | 192 | 256 | 320;
+
 /**
  * Options for configuring FFmpeg commands.
  */
@@ -44,7 +46,7 @@ export interface FFmpegParams {
   videoCodec?: 'copy' | 'libx264';
 
   /** Audio bitrate in kbps for the output audio. Equivalent to the `-b:a` option in FFmpeg. */
-  audioBitrate?: '64k' | '96k' | '128k' | '192k' | '256k' | '320k' | 64 | 96 | 128 | 192 | 256 | 320;
+  audioBitrate?: AudioBitrate;
 
   /** Number of times to loop the input. Equivalent to the `-loop` option in FFmpeg. */
   loop?: number;
@@ -75,4 +77,7 @@ export interface FFmpegParams {
 
   /** Whetever process or not the video. Default: false.*/
   noVideo?: boolean;
+
+  /** The output format.*/
+  outputFormat?: 'mp4' | 'avi' | 'mkv' | 'webm' | 'mov' | 'flv' | 'mp3' | 'ogg' | 'wav';
 }
