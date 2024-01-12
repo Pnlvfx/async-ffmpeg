@@ -1,16 +1,16 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import type { AudioBitrate, FFmpegParams, Time } from '../types/index.js';
+import isStream from 'is-stream';
 
-type Value = string | boolean | number | Time | string[];
-
-const isStartTime = (obj: Value): obj is Time => {
-  if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean' || Array.isArray(obj)) return false;
+const isStartTime = (obj: ValueOf<FFmpegParams>): obj is Time => {
+  if (!obj) return false;
+  if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean' || Array.isArray(obj) || isStream(obj)) return false;
   if ('hours' in obj) return true;
   if ('minutes' in obj) return true;
   if ('seconds' in obj) return true;
   if ('milliseconds' in obj) return true;
-  for (const [k, value] of Object.entries(obj)) {
-    const key = k as keyof Time;
+  for (const [key, value] of getEntries(obj)) {
+    if (!value) continue;
     if (key === 'milliseconds') {
       if (value.toString().length > 3) throw new Error('Invalid milliseconds format! Maximum 3 numbers, example: 000');
     } else if (value.toString().length > 2) throw new Error('Invalid -ss format, it should contain maximum two numbers, example: 01');
@@ -30,8 +30,16 @@ const formatTimeUnit = (length: number, unit?: number) => {
   return '0'.repeat(length);
 };
 
-const transcode = (key: keyof FFmpegParams, value?: Value | undefined): string[] => {
-  if (key === 'inputSeeking' && value) {
+type ValueOf<T> = T[keyof T];
+type Entries<T> = [keyof T, ValueOf<T>][];
+
+const getEntries = <T extends object>(obj: T) => {
+  return Object.entries(obj) as Entries<T>;
+};
+
+const transcode = (key: keyof FFmpegParams, value?: ValueOf<FFmpegParams>): string[] => {
+  if (key === 'debug' || value === undefined) return []; // skip
+  if (key === 'inputSeeking') {
     if (isStartTime(value)) {
       const { hours, milliseconds, minutes, seconds } = value;
       const fixedHours = formatTimeUnit(2, hours);
@@ -41,24 +49,23 @@ const transcode = (key: keyof FFmpegParams, value?: Value | undefined): string[]
       return ['-ss', `${fixedHours}:${fixedMinutes}:${fixedSeconds}.${fixedMs}`];
     } else if (typeof value === 'number') {
       return ['-ss', value.toString()];
-    } else throw new Error('ss should be typeof object or string!');
+    } else throw new Error('Input Seeking should be typeof object or string!');
   }
   if (key === 'input') {
     if (typeof value === 'string') {
       return ['-i', value];
     } else if (Array.isArray(value)) {
-      const arr = [];
-      for (const v of value) {
-        arr.push('-i', v);
-      }
-      return arr;
-    } else throw new Error('input should be typeof string or array of strings!');
+      return value.map((v) => `-i ${v}`);
+    } else if (isStream(value)) {
+      value.pause();
+      return ['-i', 'pipe:0']; // add pipe command here;
+    } else throw new Error('Input could be a Stream, a File string or an array of File strings!');
   }
   if (key === 'audio') {
     if (typeof value !== 'string') throw new Error('audio should be typeof string!');
     return ['-i', value];
   }
-  if (key === 'outputSeeking' && value) {
+  if (key === 'outputSeeking') {
     if (isStartTime(value)) {
       const { hours, milliseconds, minutes, seconds } = value;
       const fixedHours = formatTimeUnit(2, hours);
@@ -70,7 +77,7 @@ const transcode = (key: keyof FFmpegParams, value?: Value | undefined): string[]
       return ['-ss', value.toString()];
     } else throw new Error('ss should be typeof object or string!');
   }
-  if (key === 'duration' && value) {
+  if (key === 'duration') {
     if (isStartTime(value)) {
       const { hours, milliseconds, minutes, seconds } = value;
       const fixedHours = formatTimeUnit(2, hours);
@@ -140,23 +147,22 @@ const transcode = (key: keyof FFmpegParams, value?: Value | undefined): string[]
     if (typeof value !== 'string') throw new Error('Output should be a string!');
     return [value];
   }
-  if (key === 'noVideo' && value === true) {
+  if (key === 'noVideo') {
     return ['-vn'];
   }
   if (key === 'outputFormat') {
     if (typeof value !== 'string') throw new Error('Output format should be a string.');
     return ['-f', value];
   }
-  throw new Error('Unsupported command provided, please open an issue if you think that this command should exist.');
+  throw new Error(`Unsupported command provided: ${key}, please open an issue if you think that this command should exist.`);
 };
 
 /** @internal */
 export const getParams = (options: FFmpegParams) => {
   const params = ['-y'];
-  for (const [k, value] of Object.entries(options)) {
-    const key = k as keyof FFmpegParams;
-    const p = transcode(key, value);
-    params.push(...p);
+  for (const [key, value] of getEntries(options)) {
+    const param = transcode(key, value);
+    params.push(...param);
   }
   return params;
 };

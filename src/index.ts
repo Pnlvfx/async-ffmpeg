@@ -1,11 +1,18 @@
+import type { FFmpegParams } from './types/index.js';
 import { ffprobe } from './lib/ffprobe.js';
 import { getParams } from './lib/params.js';
 import { startCommand } from './lib/process.js';
-import { FFmpegParams } from './types/index.js';
+import isStream from 'is-stream';
 async function ffmpeg(params: FFmpegParams) {
   const ffmpegParams = getParams(params);
-  // console.log(...ffmpegParams);
-  await startCommand('ffmpeg', ffmpegParams);
+  if (params.debug) {
+    console.log(...ffmpegParams);
+  }
+  let stream;
+  if (isStream(params.input)) {
+    stream = params.input;
+  }
+  await startCommand('ffmpeg', ffmpegParams, stream);
   return params.output;
 }
 

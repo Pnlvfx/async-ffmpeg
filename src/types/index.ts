@@ -6,6 +6,8 @@
 //   height: number;
 // }
 
+import internal from 'node:stream';
+
 // export interface VideoFilter {
 //   zoompan?: Zoompan;
 // }
@@ -24,7 +26,7 @@ export type AudioBitrate = '64k' | '96k' | '128k' | '192k' | '256k' | '320k' | 6
  */
 export interface FFmpegParams {
   /** Input file path. Equivalent to the `-i` option in FFmpeg. */
-  input: string | string[];
+  input: string | string[] | internal.Readable;
 
   /** audio-only input path. Equivalent to the `-i` option in FFmpeg. */
   audio?: string;
@@ -80,4 +82,7 @@ export interface FFmpegParams {
 
   /** The output format.*/
   outputFormat?: 'mp4' | 'avi' | 'mkv' | 'webm' | 'mov' | 'flv' | 'mp3' | 'ogg' | 'wav';
+
+  /** Whether to include debug information. Default: false.*/
+  debug?: boolean;
 }
