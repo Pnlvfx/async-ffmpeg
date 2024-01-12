@@ -1,7 +1,7 @@
 {
   "name": "async-ffmpeg",
   "description": "Node interaction with ffmpeg in node.js promise style.",
-  "version": "2024.1.14",
+  "version": "2024.1.15",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
@@ -55,5 +55,8 @@
     "rimraf": "^5.0.5",
     "ts-jest": "^29.1.1",
     "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "is-stream": "^3.0.0"
   }
 }
