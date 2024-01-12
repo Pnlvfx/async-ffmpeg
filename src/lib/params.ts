@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import type { AudioBitrate, FFmpegParams, Time } from '../types/index.js';
-import isStream from 'is-stream';
+import { isStream } from 'is-stream';
 
 const isStartTime = (obj: ValueOf<FFmpegParams>): obj is Time => {
   if (!obj) return false;

@@ -2,7 +2,7 @@ import type { FFmpegParams } from './types/index.js';
 import { ffprobe } from './lib/ffprobe.js';
 import { getParams } from './lib/params.js';
 import { startCommand } from './lib/process.js';
-import isStream from 'is-stream';
+import { isStream } from 'is-stream';
 async function ffmpeg(params: FFmpegParams) {
   const ffmpegParams = getParams(params);
   if (params.debug) {
