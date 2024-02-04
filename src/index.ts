@@ -6,6 +6,7 @@ import { isStream } from 'is-stream';
 async function ffmpeg(params: FFmpegParams) {
   const ffmpegParams = getParams(params);
   if (params.debug) {
+    // eslint-disable-next-line no-console
     console.log(...ffmpegParams);
   }
   let stream;

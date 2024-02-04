@@ -1,14 +1,10 @@
-/* eslint-disable sonarjs/cognitive-complexity */
 import type { AudioBitrate, FFmpegParams, Time } from '../types/index.js';
 import { isStream } from 'is-stream';
 
 const isStartTime = (obj: ValueOf<FFmpegParams>): obj is Time => {
   if (!obj) return false;
   if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean' || Array.isArray(obj) || isStream(obj)) return false;
-  if ('hours' in obj) return true;
-  if ('minutes' in obj) return true;
-  if ('seconds' in obj) return true;
-  if ('milliseconds' in obj) return true;
+  if ('hours' in obj || 'minutes' in obj || 'seconds' in obj || 'milliseconds' in obj) return true;
   for (const [key, value] of getEntries(obj)) {
     if (!value) continue;
     if (key === 'milliseconds') {
@@ -37,6 +33,7 @@ const getEntries = <T extends object>(obj: T) => {
   return Object.entries(obj) as Entries<T>;
 };
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const transcode = (key: keyof FFmpegParams, value?: ValueOf<FFmpegParams>): string[] => {
   if (key === 'debug' || value === undefined) return []; // skip
   if (key === 'inputSeeking') {
