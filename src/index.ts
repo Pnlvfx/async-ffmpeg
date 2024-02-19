@@ -11,7 +11,6 @@ async function ffmpeg(params: FFmpegParams) {
   }
   const stream = isStream(params.input) ? params.input : undefined;
   await startCommand('ffmpeg', ffmpegParams, stream);
-  return params.output;
 }
 
 ffmpeg.ffprobe = ffprobe;

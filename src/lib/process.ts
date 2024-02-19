@@ -15,37 +15,27 @@ export const startCommand = async (command: string, params: string[], stream?: i
     }
 
     let wasResolved = false;
-    let stderr: Buffer;
+    let stderr: Buffer | undefined;
 
-    ffmpegProcess.on('error', (err) => reject(err));
-
-    // ffmpegProcess.stdout.on('data', (data) => {
-    //   console.log(`stdout: ${data}`);
-    // });
+    ffmpegProcess.on('error', reject);
 
     ffmpegProcess.stderr.on('data', (data) => {
       stderr += data;
       // getProgress(stderrData);
     });
 
-    ffmpegProcess.on('close', (code) => {
+    const onEnd = (code: number) => {
       if (wasResolved) return;
       if (code === 0) {
         resolve();
         wasResolved = true;
       } else {
-        reject(stderr.toString());
+        reject(`FFmpeg error: ${stderr?.toString() || 'Unknown ffmpeg error'}`);
       }
-    });
+    };
 
-    ffmpegProcess.on('exit', (code) => {
-      if (wasResolved) return;
-      if (code === 0) {
-        resolve();
-        wasResolved = true;
-      } else {
-        reject(stderr);
-      }
-    });
+    ffmpegProcess.on('close', onEnd);
+
+    ffmpegProcess.on('exit', onEnd);
   });
 };
