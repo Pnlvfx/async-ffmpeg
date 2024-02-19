@@ -6,9 +6,7 @@ export const startCommand = async (command: string, params: string[], stream?: i
   return new Promise<void>((resolve, reject) => {
     const ffmpegProcess = spawn(command, params);
     if (stream) {
-      stream.on('error', (err) => {
-        reject(`Encountered stream error: ${err.message}`);
-      });
+      stream.on('error', (err) => reject(`Encountered stream error: ${err.message}`));
 
       stream.resume();
       stream.pipe(ffmpegProcess.stdin);
@@ -17,19 +15,16 @@ export const startCommand = async (command: string, params: string[], stream?: i
     }
 
     let wasResolved = false;
-    let stderr = '';
+    let stderr: Buffer;
 
-    ffmpegProcess.on('error', (err) => {
-      reject(err);
-    });
+    ffmpegProcess.on('error', (err) => reject(err));
 
     // ffmpegProcess.stdout.on('data', (data) => {
     //   console.log(`stdout: ${data}`);
     // });
 
     ffmpegProcess.stderr.on('data', (data) => {
-      const stderrData = data.toString();
-      stderr += stderrData;
+      stderr += data;
       // getProgress(stderrData);
     });
 
@@ -39,7 +34,7 @@ export const startCommand = async (command: string, params: string[], stream?: i
         resolve();
         wasResolved = true;
       } else {
-        reject(stderr);
+        reject(stderr.toString());
       }
     });
 

@@ -9,10 +9,7 @@ async function ffmpeg(params: FFmpegParams) {
     // eslint-disable-next-line no-console
     console.log(...ffmpegParams);
   }
-  let stream;
-  if (isStream(params.input)) {
-    stream = params.input;
-  }
+  const stream = isStream(params.input) ? params.input : undefined;
   await startCommand('ffmpeg', ffmpegParams, stream);
   return params.output;
 }

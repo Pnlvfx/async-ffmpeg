@@ -1,10 +1,11 @@
 import type { AudioBitrate, FFmpegParams, Time } from '../types/index.js';
 import { isStream } from 'is-stream';
+import { getEntries } from 'coraline';
 
-const isStartTime = (obj: ValueOf<FFmpegParams>): obj is Time => {
+const isStartTime = (obj: FFmpegParams[keyof FFmpegParams]): obj is Time => {
   if (!obj) return false;
   if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean' || Array.isArray(obj) || isStream(obj)) return false;
-  if ('hours' in obj || 'minutes' in obj || 'seconds' in obj || 'milliseconds' in obj) return true;
+  if (typeof obj === 'object' && ('hours' in obj || 'minutes' in obj || 'seconds' in obj || 'milliseconds' in obj)) return true;
   for (const [key, value] of getEntries(obj)) {
     if (!value) continue;
     if (key === 'milliseconds') {
@@ -26,15 +27,8 @@ const formatTimeUnit = (length: number, unit?: number) => {
   return '0'.repeat(length);
 };
 
-type ValueOf<T> = T[keyof T];
-type Entries<T> = [keyof T, ValueOf<T>][];
-
-const getEntries = <T extends object>(obj: T) => {
-  return Object.entries(obj) as Entries<T>;
-};
-
 // eslint-disable-next-line sonarjs/cognitive-complexity
-const transcode = (key: keyof FFmpegParams, value?: ValueOf<FFmpegParams>): string[] => {
+const transcode = <T extends keyof FFmpegParams>(key: T, value?: FFmpegParams[T]): string[] => {
   if (key === 'debug' || value === undefined) return []; // skip
   if (key === 'inputSeeking') {
     if (isStartTime(value)) {
