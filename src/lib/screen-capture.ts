@@ -18,8 +18,11 @@ export interface ScreenCaptureParams {
   output: string;
 }
 
+let isRunning = false;
+
 export const screenCapture = ({ display, framerate, height, width, x, y, output }: ScreenCaptureParams) => {
   if (!isLinux) throw new Error('Screen capture has only been tested on linux systems for now.');
+  if (isRunning) throw new Error('Please use the screen capture only once at a time.');
 
   let ffmpegProcess: ChildProcessWithoutNullStreams | undefined;
 
@@ -37,6 +40,7 @@ export const screenCapture = ({ display, framerate, height, width, x, y, output 
         `${display}.0+${x},${y}`,
         output,
       ]);
+      isRunning = true;
 
       ffmpegProcess.on('error', reject);
 
@@ -47,6 +51,7 @@ export const screenCapture = ({ display, framerate, height, width, x, y, output 
       });
 
       ffmpegProcess.on('close', (code) => {
+        isRunning = false;
         if (code === 0) resolve();
         else reject(error);
       });
