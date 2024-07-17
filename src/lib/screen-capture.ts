@@ -1,5 +1,5 @@
+import { type ChildProcessWithoutNullStreams, spawn } from 'node:child_process';
 import { isLinux } from '../constants/constants.js';
-import ffmpeg from '../index.js';
 
 export interface ScreenCaptureParams {
   /** This refers to the display number and screen number. 0.0 is usually the default display and screen on a system. */
@@ -18,11 +18,58 @@ export interface ScreenCaptureParams {
   output: string;
 }
 
-export const screenCapture = async ({ display, framerate, height, width, x, y, output }: ScreenCaptureParams) => {
+export const screenCapture = ({ display, framerate, height, width, x, y, output }: ScreenCaptureParams) => {
   if (!isLinux) throw new Error('Screen capture has only been tested on linux systems for now.');
-  await ffmpeg({
-    extra: ['-video_size', `${width}x${height}`, '-framerate', framerate.toString(), 'x11grab'],
-    input: `${display}.0+${x},${y}`,
-    output,
-  });
+
+  let ffmpegProcess: ChildProcessWithoutNullStreams | undefined;
+
+  const startRecording = () => {
+    return new Promise<void>((resolve, reject) => {
+      ffmpegProcess = spawn('ffmpeg', [
+        '-y',
+        '-video_size',
+        `${width}x${height}`,
+        '-framerate',
+        framerate.toString(),
+        '-f',
+        'x11grab',
+        '-i',
+        `${display}.0+${x},${y}`,
+        output,
+      ]);
+
+      ffmpegProcess.on('error', reject);
+
+      let error = '';
+
+      ffmpegProcess.stderr.on('data', (chunk) => {
+        error += chunk.toString();
+      });
+
+      ffmpegProcess.on('close', (code) => {
+        if (code === 0) resolve();
+        else reject(error);
+      });
+
+      ffmpegProcess.stdin.on('error', reject);
+    });
+  };
+
+  const stopRecording = () => {
+    return new Promise<void>((resolve, reject) => {
+      if (ffmpegProcess && !ffmpegProcess.killed) {
+        ffmpegProcess.stdin.write('q\n', (err) => {
+          if (err) reject(err);
+          else resolve();
+        });
+      } else {
+        resolve();
+      }
+    });
+  };
+
+  return {
+    startRecording,
+    stopRecording,
+  };
 };

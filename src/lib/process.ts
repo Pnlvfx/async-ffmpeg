@@ -6,12 +6,12 @@ export const startCommand = async (command: string, params: string[], stream?: i
   return new Promise<void>((resolve, reject) => {
     const ffmpegProcess = spawn(command, params);
     if (stream) {
-      stream.on('error', (err) => reject(`Encountered stream error: ${err.message}`));
+      stream.on('error', reject);
 
       stream.resume();
       stream.pipe(ffmpegProcess.stdin);
 
-      ffmpegProcess.stdin.on('error', (err) => reject(err));
+      ffmpegProcess.stdin.on('error', reject);
     }
 
     let wasResolved = false;

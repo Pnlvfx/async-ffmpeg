@@ -54,7 +54,7 @@ module.exports = {
     'no-multiple-empty-lines': 'error',
     'no-unsafe-negation': 'error',
     'prefer-const': 'error',
-    'no-console': 'error',
+    'no-console': 'warn',
 
     'no-unused-vars': 'off',
     'unicorn/prevent-abbreviations': 'off',
