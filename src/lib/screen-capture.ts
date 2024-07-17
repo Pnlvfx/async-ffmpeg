@@ -1,7 +1,7 @@
 import { isLinux } from '../constants/constants.js';
 import ffmpeg from '../index.js';
 
-interface ScreenCaptureParams {
+export interface ScreenCaptureParams {
   /** This refers to the display number and screen number. 0.0 is usually the default display and screen on a system. */
   display: string;
   /**The video size width. */
