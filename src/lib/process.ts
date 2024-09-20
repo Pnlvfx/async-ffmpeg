@@ -15,12 +15,12 @@ export const startCommand = async (command: string, params: string[], stream?: i
     }
 
     let wasResolved = false;
-    let stderr: Buffer | undefined;
+    let stderr: '';
 
     ffmpegProcess.on('error', reject);
 
-    ffmpegProcess.stderr.on('data', (data) => {
-      stderr += data;
+    ffmpegProcess.stderr.on('data', (data: Buffer) => {
+      stderr += data.toString();
       // getProgress(stderrData);
     });
 
@@ -30,7 +30,7 @@ export const startCommand = async (command: string, params: string[], stream?: i
         resolve();
         wasResolved = true;
       } else {
-        reject(`FFmpeg error: ${stderr?.toString() || 'Unknown ffmpeg error'}`);
+        reject(new Error(`FFmpeg error: ${stderr}`));
       }
     };
 

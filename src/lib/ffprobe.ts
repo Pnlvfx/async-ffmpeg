@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { spawn } from 'node:child_process';
 import { Stream } from 'node:stream';
@@ -21,16 +20,16 @@ const parseFfprobeOutput = (out: string): FfprobeData => {
     while (line !== undefined) {
       if (line.toLowerCase() == '[/' + name + ']') {
         return data2 as T;
-      } else if (/^\[/.test(line)) {
+      } else if (line.startsWith('[')) {
         line = lines.shift();
         continue;
       }
 
-      const kv = line.match(/^([^=]+)=(.*)$/);
+      const kv = /^([^=]+)=(.*)$/.exec(line);
       const rgx1 = kv?.at(1);
       const rgx2 = kv?.at(2);
       if (rgx1 && rgx2) {
-        (data2 as any)[rgx1] = !rgx1.startsWith('TAG:') && /^\d+(\.\d+)?$/.test(rgx2) ? Number(rgx2) : rgx2;
+        data2[rgx1] = !rgx1.startsWith('TAG:') && /^\d+(\.\d+)?$/.test(rgx2) ? Number(rgx2) : rgx2;
       }
 
       line = lines.shift();
@@ -43,12 +42,12 @@ const parseFfprobeOutput = (out: string): FfprobeData => {
   while (line !== undefined) {
     if (/^\[stream/i.test(line)) {
       const stream = parseBlock<FfprobeStream>('stream');
-      data['streams'].push(stream);
+      data.streams.push(stream);
     } else if (/^\[chapter/i.test(line)) {
       const chapter = parseBlock('chapter');
-      data['chapters'].push(chapter);
+      data.chapters.push(chapter);
     } else if (line.toLowerCase() === '[format]') {
-      data['format'] = parseBlock<FfprobeFormat>('format');
+      data.format = parseBlock<FfprobeFormat>('format');
     }
 
     line = lines.shift();
@@ -67,35 +66,31 @@ export const ffprobe = async (file: string | Stream) => {
     let stdout = '';
     let stderr = '';
 
-    ffprobeProcess.on('error', (err) => {
-      reject(err);
+    ffprobeProcess.on('error', reject);
+
+    ffprobeProcess.stdout.on('data', (data: Buffer) => {
+      stdout += data.toString();
     });
 
-    ffprobeProcess.stdout.on('data', (data) => {
-      stdout += data;
-    });
-
-    ffprobeProcess.stderr.on('data', (data) => {
-      stderr += data;
+    ffprobeProcess.stderr.on('data', (data: Buffer) => {
+      stderr += data.toString();
     });
 
     ffprobeProcess.on('close', (code) => {
       if (code === 0) {
         const data = parseFfprobeOutput(stdout);
         for (const target of [data.format, ...data.streams]) {
-          if (target) {
-            const legacyTagKeys = Object.keys(target).filter((key: string) => key.match(/^TAG:/));
-            if (legacyTagKeys.length > 0) {
-              target.tags = target.tags || {};
+          const legacyTagKeys = Object.keys(target).filter((key: string) => /^TAG:/.exec(key));
+          if (legacyTagKeys.length > 0) {
+            target.tags = target.tags || {};
 
-              for (const tagKey of legacyTagKeys) {
-                (target.tags as any)[tagKey.slice(4)] = target[tagKey];
-                delete target[tagKey];
-              }
+            for (const tagKey of legacyTagKeys) {
+              target.tags[tagKey.slice(4)] = target[tagKey];
+              delete target[tagKey];
             }
           }
 
-          const legacyDispositionKeys = Object.keys(target).filter((key: string) => key.match(/^DISPOSITION:/));
+          const legacyDispositionKeys = Object.keys(target).filter((key: string) => /^DISPOSITION:/.exec(key));
 
           if (legacyDispositionKeys.length > 0) {
             target.disposition = target.disposition || {};
@@ -107,7 +102,7 @@ export const ffprobe = async (file: string | Stream) => {
           }
         }
         resolve(data);
-      } else reject(stderr.toString());
+      } else reject(new Error(stderr));
     });
   });
 };

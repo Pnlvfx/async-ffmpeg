@@ -4,10 +4,9 @@ export const getProgress = (stderrData: string) => {
 };
 
 const calculateProgress = (stderrData: string) => {
-  const timeMatch = stderrData.match(/time=(\d+:\d+:\d+\.\d+)/);
+  const timeMatch = /time=(\d+:\d+:\d+\.\d+)/.exec(stderrData)?.at(1);
   if (timeMatch) {
-    const currentTime = timeMatch[1];
     // eslint-disable-next-line no-console
-    console.log(`Conversion progress: ${currentTime}`);
+    console.log(`Conversion progress: ${timeMatch.toString()}`);
   }
 };

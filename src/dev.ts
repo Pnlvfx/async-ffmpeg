@@ -10,7 +10,7 @@ const run = async () => {
   await screenCapture.stopRecording();
   await check;
   console.log('Screen recorded');
-  run();
+  void run();
 };
 
-run();
+void run();

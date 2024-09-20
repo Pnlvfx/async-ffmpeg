@@ -7,7 +7,7 @@ const isStartTime = (obj: FFmpegParams[keyof FFmpegParams]): obj is Time => {
   if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean' || Array.isArray(obj) || isStream(obj)) return false;
   if (typeof obj === 'object' && ('hours' in obj || 'minutes' in obj || 'seconds' in obj || 'milliseconds' in obj)) return true;
   for (const [key, value] of getEntries(obj)) {
-    if (!value) continue;
+    if (typeof value !== 'number') continue;
     if (key === 'milliseconds') {
       if (value.toString().length > 3) throw new Error('Invalid milliseconds format! Maximum 3 numbers, example: 000');
     } else if (value.toString().length > 2) throw new Error('Invalid -ss format, it should contain maximum two numbers, example: 01');
@@ -27,7 +27,6 @@ const formatTimeUnit = (length: number, unit?: number) => {
   return '0'.repeat(length);
 };
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 const transcode = <T extends keyof FFmpegParams>(key: T, value?: FFmpegParams[T]): string[] => {
   if (key === 'debug' || value === undefined) return []; // skip
   if (key === 'inputSeeking') {

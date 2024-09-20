@@ -31,13 +31,13 @@ export const screenCapture = ({ display, framerate, height, width, x, y, output 
       ffmpegProcess = spawn('ffmpeg', [
         '-y',
         '-video_size',
-        `${width}x${height}`,
+        `${width.toString()}x${height.toString()}`,
         '-framerate',
         framerate.toString(),
         '-f',
         'x11grab',
         '-i',
-        `${display}.0+${x},${y}`,
+        `${display}.0+${x.toString()},${y.toString()}`,
         output,
       ]);
       isRunning = true;
@@ -46,14 +46,14 @@ export const screenCapture = ({ display, framerate, height, width, x, y, output 
 
       let error = '';
 
-      ffmpegProcess.stderr.on('data', (chunk) => {
+      ffmpegProcess.stderr.on('data', (chunk: Buffer) => {
         error += chunk.toString();
       });
 
       ffmpegProcess.on('close', (code) => {
         isRunning = false;
         if (code === 0) resolve();
-        else reject(error);
+        else reject(new Error(error));
       });
 
       ffmpegProcess.stdin.on('error', reject);
