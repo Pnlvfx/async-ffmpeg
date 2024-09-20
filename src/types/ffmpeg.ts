@@ -1,16 +1,4 @@
-// export interface Zoompan {
-//   zoomIncrement: number;
-//   maxZoom: number;
-//   frames: number;
-//   width: number;
-//   height: number;
-// }
-
 import internal from 'node:stream';
-
-// export interface VideoFilter {
-//   zoompan?: Zoompan;
-// }
 
 export interface Time {
   hours?: number;

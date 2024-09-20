@@ -1,9 +1,10 @@
-import type { FFmpegParams } from './types/index.js';
+import type { FFmpegParams } from './types/ffmpeg.js';
 import { ffprobe } from './lib/ffprobe.js';
 import { getParams } from './lib/params.js';
 import { startCommand } from './lib/process.js';
 import { isStream } from 'is-stream';
 import { screenCapture } from './lib/screen-capture.js';
+
 async function ffmpeg(params: FFmpegParams) {
   const ffmpegParams = getParams(params);
   if (params.debug) {
@@ -19,7 +20,4 @@ ffmpeg.screenCapture = screenCapture;
 
 export default ffmpeg;
 
-export { VideoFilter } from './constants/video-filter.js';
 export { isValidAudioBitrate } from './lib/params.js';
-
-// export { parseDuration, parseDurationNum } from './lib/time.js';

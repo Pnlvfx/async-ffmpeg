@@ -1,7 +1,8 @@
+/* eslint-disable sonarjs/no-os-command-from-path */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { FfprobeData, FfprobeFormat, FfprobeStream } from '../types/ffprobe.js';
 import { spawn } from 'node:child_process';
 import { Stream } from 'node:stream';
-import { FfprobeData, FfprobeFormat, FfprobeStream } from '../types/ffprobe.js';
 
 const parseFfprobeOutput = (out: string): FfprobeData => {
   let lines = out.split(/\r\n|\r|\n/);
@@ -56,7 +57,6 @@ const parseFfprobeOutput = (out: string): FfprobeData => {
   return data;
 };
 
-/** @internal */
 export const ffprobe = async (file: string | Stream) => {
   return new Promise<FfprobeData>((resolve, reject) => {
     const isStream = file instanceof Stream;

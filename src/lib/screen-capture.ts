@@ -1,5 +1,8 @@
+/* eslint-disable sonarjs/no-os-command-from-path */
 import { type ChildProcessWithoutNullStreams, spawn } from 'node:child_process';
-import { isLinux } from '../constants/constants.js';
+import os from 'node:os';
+
+const isLinux = os.platform() === 'linux';
 
 export interface ScreenCaptureParams {
   /** This refers to the display number and screen number. 0.0 is usually the default display and screen on a system. */

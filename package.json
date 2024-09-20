@@ -2,37 +2,35 @@
   "name": "async-ffmpeg",
   "description": "Node interaction with ffmpeg in node.js promise style.",
   "version": "2024.1.15",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/esm/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/esm/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
-    },
-    "./*": {
-      "import": "./*",
-      "require": "./*"
-    }
+  "author": {
+    "email": "simonegauli@gmail.com",
+    "name": "Simone Gauli"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Pnlvfx/async-ffmpeg.git"
   },
-  "type": "module",
   "license": "MIT",
+  "type": "module",
+  "main": "./dist/cjs/ffmpeg.js",
+  "module": "./dist/esm/ffmpeg.js",
+  "types": "./dist/esm/ffmpeg.d.ts",
+  "exports": {
+    "types": "./dist/esm/ffmpeg.d.ts",
+    "import": "./dist/esm/ffmpeg.js",
+    "require": "./dist/cjs/ffmpeg.js"
+  },
   "scripts": {
+    "tsc": "tsc --noEmit true",
     "generate:package.json": "tsx ./tools/generate-commonjs-package-json.ts dist/cjs/package.json",
-    "dev": "tsc -w & node --watch ./dist/esm/dev.js",
-    "start": "node .",
-    "lint": "eslint .",
-    "build": "rimraf dist && eslint . && tsc && npm run build:cjs && npm run generate:package.json",
-    "build:cjs": "tsc --module commonjs --moduleResolution node --outDir dist/cjs",
+    "unused": "tsx ./tools/unused.ts",
+    "test": "rimraf coverage && jest --coverage",
+    "lint": "eslint",
+    "build": "rimraf dist && npm run unused && eslint && npm run build:esm && npm run build:cjs && npm run generate:package.json",
+    "build:esm": "tsc -p tsconfig.build.json",
+    "build:cjs": "tsc -p tsconfig.build.json --module CommonJS --moduleResolution Node --outDir dist/cjs",
     "prepare": "npm run build",
-    "prepublishOnly": "npm run test && npm run lint",
-    "pretest": "npm run lint && tsc --noEmit",
-    "test": "rimraf coverage && NODE_OPTIONS=--experimental-vm-modules jest --verbose --coverage"
+    "prepublishOnly": "npm run test && npm run lint"
   },
   "files": [
     "dist",
@@ -40,22 +38,23 @@
     "README.md"
   ],
   "devDependencies": {
-    "@eslint/js": "^9.8.0",
+    "@eslint/js": "^9.11.0",
     "@types/eslint__js": "^8.42.3",
-    "@types/jest": "^29.5.12",
-    "@types/node": "^22.0.0",
-    "eslint": "^9.8.0",
-    "eslint-plugin-sonarjs": "^1.0.4",
+    "@types/jest": "^29.5.13",
+    "@types/node": "^22.5.5",
+    "coraline": "github:Pnlvfx/coraline",
+    "eslint": "^9.11.0",
+    "eslint-plugin-sonarjs": "^2.0.2",
     "eslint-plugin-unicorn": "^55.0.0",
     "jest": "^29.7.0",
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
-    "ts-jest": "^29.2.3",
-    "typescript": "^5.5.4",
-    "typescript-eslint": "^8.0.0-alpha.58"
+    "ts-jest": "^29.2.5",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.2",
+    "typescript-eslint": "^8.6.0"
   },
   "peerDependencies": {
-    "coraline": "github:Pnlvfx/coraline",
     "is-stream": "^3.0.0"
   }
 }

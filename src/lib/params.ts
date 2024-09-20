@@ -1,12 +1,11 @@
-import type { AudioBitrate, FFmpegParams, Time } from '../types/index.js';
+import type { AudioBitrate, FFmpegParams, Time } from '../types/ffmpeg.js';
 import { isStream } from 'is-stream';
-import { getEntries } from 'coraline';
 
 const isStartTime = (obj: FFmpegParams[keyof FFmpegParams]): obj is Time => {
   if (!obj) return false;
   if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean' || Array.isArray(obj) || isStream(obj)) return false;
   if (typeof obj === 'object' && ('hours' in obj || 'minutes' in obj || 'seconds' in obj || 'milliseconds' in obj)) return true;
-  for (const [key, value] of getEntries(obj)) {
+  for (const [key, value] of Object.entries(obj)) {
     if (typeof value !== 'number') continue;
     if (key === 'milliseconds') {
       if (value.toString().length > 3) throw new Error('Invalid milliseconds format! Maximum 3 numbers, example: 000');
@@ -147,11 +146,10 @@ const transcode = <T extends keyof FFmpegParams>(key: T, value?: FFmpegParams[T]
   throw new Error(`Unsupported command provided: ${key}, please open an issue if you think that this command should exist.`);
 };
 
-/** @internal */
 export const getParams = (options: FFmpegParams) => {
   const params = ['-y'];
-  for (const [key, value] of getEntries(options)) {
-    const param = transcode(key, value);
+  for (const [key, value] of Object.entries(options)) {
+    const param = transcode(key as keyof FFmpegParams, value);
     params.push(...param);
   }
   return params;

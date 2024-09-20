@@ -1,7 +1,6 @@
 import { spawn } from 'node:child_process';
 import internal from 'node:stream';
 
-/** @internal */
 export const startCommand = async (command: string, params: string[], stream?: internal.Readable) => {
   return new Promise<void>((resolve, reject) => {
     const ffmpegProcess = spawn(command, params);
