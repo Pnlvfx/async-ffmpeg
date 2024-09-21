@@ -14,6 +14,7 @@ const parseFfprobeOutput = (out: string): FfprobeData => {
     chapters: [],
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
   const parseBlock = <T>(name: string): T => {
     const data2: Partial<T> = {};
 
@@ -30,7 +31,8 @@ const parseFfprobeOutput = (out: string): FfprobeData => {
       const rgx1 = kv?.at(1);
       const rgx2 = kv?.at(2);
       if (rgx1 && rgx2) {
-        data2[rgx1] = !rgx1.startsWith('TAG:') && /^\d+(\.\d+)?$/.test(rgx2) ? Number(rgx2) : rgx2;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        data2[rgx1 as keyof T] = !rgx1.startsWith('TAG:') && /^\d+(\.\d+)?$/.test(rgx2) ? Number(rgx2) : (rgx2 as any);
       }
 
       line = lines.shift();
@@ -76,6 +78,7 @@ export const ffprobe = async (file: string | Stream) => {
       stderr += data.toString();
     });
 
+    // eslint-disable-next-line sonarjs/cognitive-complexity
     ffprobeProcess.on('close', (code) => {
       if (code === 0) {
         const data = parseFfprobeOutput(stdout);
@@ -85,7 +88,9 @@ export const ffprobe = async (file: string | Stream) => {
             target.tags = target.tags || {};
 
             for (const tagKey of legacyTagKeys) {
-              target.tags[tagKey.slice(4)] = target[tagKey];
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+              (target.tags as any)[tagKey.slice(4)] = target[tagKey];
+              // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
               delete target[tagKey];
             }
           }
@@ -96,7 +101,9 @@ export const ffprobe = async (file: string | Stream) => {
             target.disposition = target.disposition || {};
 
             for (const dispositionKey of legacyDispositionKeys) {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
               (target.disposition as any)[dispositionKey.slice(12)] = target[dispositionKey];
+              // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
               delete target[dispositionKey];
             }
           }

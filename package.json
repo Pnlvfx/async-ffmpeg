@@ -1,7 +1,7 @@
 {
   "name": "async-ffmpeg",
   "description": "Node interaction with ffmpeg in node.js promise style.",
-  "version": "2024.1.15",
+  "version": "2024.9.21",
   "author": {
     "email": "simonegauli@gmail.com",
     "name": "Simone Gauli"
@@ -50,11 +50,12 @@
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
     "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
     "tsx": "^4.19.1",
     "typescript": "^5.6.2",
     "typescript-eslint": "^8.6.0"
   },
   "peerDependencies": {
-    "is-stream": "^3.0.0"
+    "is-stream": "^4.0.1"
   }
 }

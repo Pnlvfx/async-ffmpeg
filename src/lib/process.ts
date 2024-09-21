@@ -6,21 +6,18 @@ export const startCommand = async (command: string, params: string[], stream?: i
     const ffmpegProcess = spawn(command, params);
     if (stream) {
       stream.on('error', reject);
-
       stream.resume();
       stream.pipe(ffmpegProcess.stdin);
-
       ffmpegProcess.stdin.on('error', reject);
     }
 
     let wasResolved = false;
-    let stderr: '';
+    let stderr = '';
 
     ffmpegProcess.on('error', reject);
 
     ffmpegProcess.stderr.on('data', (data: Buffer) => {
       stderr += data.toString();
-      // getProgress(stderrData);
     });
 
     const onEnd = (code: number) => {
