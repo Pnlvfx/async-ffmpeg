@@ -1,6 +1,5 @@
-import type internal from 'node:stream';
+import internal from 'node:stream';
 import type { FFmpegParams, Time } from '../types/ffmpeg.js';
-import { isStream } from 'is-stream';
 
 export const getParams = ({
   inputSeeking,
@@ -86,12 +85,13 @@ export const getParams = ({
 };
 
 const parseInput = (input: string | string[] | internal.Readable) => {
-  if (isStream(input)) {
+  if (typeof input === 'string') return ['-i', input];
+  if (Array.isArray(input)) return input.map((v) => `-i ${v}`);
+  if (input instanceof internal.Readable) {
     input.pause();
     return ['-i', 'pipe:0'];
   }
-  if (Array.isArray(input)) return input.map((v) => `-i ${v}`);
-  return ['-i', input];
+  throw new Error('Invalid input provided.');
 };
 
 const parseTime = (value: Time | number) => {
