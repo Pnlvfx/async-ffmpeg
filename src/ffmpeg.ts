@@ -20,3 +20,4 @@ ffmpeg.screenCapture = screenCapture;
 export default ffmpeg;
 
 export { isValidAudioBitrate } from './lib/helpers.js';
+export type { Time } from './types/ffmpeg.js';
