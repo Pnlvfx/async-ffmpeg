@@ -7,7 +7,9 @@ export interface Time {
   milliseconds?: number;
 }
 
-export type AudioBitrate = 64 | 96 | 128 | 192 | 256 | 320;
+export const audioBitrates = [64, 96, 128, 192, 256, 320] as const;
+
+export type AudioBitrate = (typeof audioBitrates)[number];
 
 /**
  * Options for configuring FFmpeg commands.

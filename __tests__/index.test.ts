@@ -9,7 +9,7 @@ const temporaryDir = temporaryDirectorySync();
 const output = path.join(temporaryDir, 'output.mp4');
 const outputStream = path.join(temporaryDir, 'output-stream.mp4');
 
-describe('concat function', () => {
+describe('async ffmpeg', () => {
   it(
     'should convert a stream with ffmpeg successfully',
     async () => {

@@ -15,5 +15,5 @@ export async function ffmpeg({ debug, ...params }: FFmpegParams) {
 export { ffprobe } from './ffprobe.js';
 export { screenCapture } from './screen-capture.js';
 
-export type { AudioBitrate } from './types/ffmpeg.js';
+export { audioBitrates, type AudioBitrate } from './types/ffmpeg.js';
 export type { Time } from './types/ffmpeg.js';
