@@ -52,10 +52,12 @@ export interface FfprobeStream {
   bits_per_sample?: number;
   disposition?: FfprobeStreamDisposition;
   rotation?: string | number;
+
+  // complain
+  tags?: Record<string, unknown>;
 }
 
 interface FfprobeStreamDisposition {
-  [key: string]: unknown;
   default?: number;
   dub?: number;
   original?: number;
@@ -68,9 +70,10 @@ interface FfprobeStreamDisposition {
   clean_effects?: number;
   attached_pic?: number;
   timed_thumbnails?: number;
+  [key: string]: unknown;
 }
 
-export interface FfprobeFormat {
+interface FfprobeFormat {
   [key: string]: unknown;
   filename?: string;
   nb_streams?: number;
@@ -82,5 +85,8 @@ export interface FfprobeFormat {
   size?: number;
   bit_rate?: number;
   probe_score?: number;
-  tags?: Record<string, string | number>;
+  tags?: Record<string, unknown>;
+
+  //complain
+  disposition?: Record<string, unknown>;
 }

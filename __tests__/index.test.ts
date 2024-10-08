@@ -1,6 +1,6 @@
 import { describe, it } from '@jest/globals';
 import path from 'node:path';
-import ffmpeg from '../src/ffmpeg.js';
+import { ffmpeg } from '../src/ffmpeg.js';
 import fs from 'node:fs';
 import coraline, { temporaryDirectorySync } from 'coraline';
 

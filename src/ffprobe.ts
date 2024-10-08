@@ -1,6 +1,4 @@
-/* eslint-disable sonarjs/no-os-command-from-path */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import type { FfprobeData, FfprobeFormat, FfprobeStream } from '../types/ffprobe.js';
+import type { FfprobeData, FfprobeStream } from './types/ffprobe.js';
 import { spawn } from 'node:child_process';
 import { Stream } from 'node:stream';
 
@@ -14,14 +12,13 @@ const parseFfprobeOutput = (out: string): FfprobeData => {
     chapters: [],
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
-  const parseBlock = <T>(name: string): T => {
-    const data2: Partial<T> = {};
+  const parseBlock = (name: string) => {
+    const data2: Record<string, string | number> = {};
 
     let line = lines.shift();
     while (line !== undefined) {
       if (line.toLowerCase() == '[/' + name + ']') {
-        return data2 as T;
+        return data2;
       } else if (line.startsWith('[')) {
         line = lines.shift();
         continue;
@@ -31,26 +28,25 @@ const parseFfprobeOutput = (out: string): FfprobeData => {
       const rgx1 = kv?.at(1);
       const rgx2 = kv?.at(2);
       if (rgx1 && rgx2) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        data2[rgx1 as keyof T] = !rgx1.startsWith('TAG:') && /^\d+(\.\d+)?$/.test(rgx2) ? Number(rgx2) : (rgx2 as any);
+        data2[rgx1] = !rgx1.startsWith('TAG:') && /^\d+(\.\d+)?$/.test(rgx2) ? Number(rgx2) : rgx2;
       }
 
       line = lines.shift();
     }
 
-    return data2 as T;
+    return data2;
   };
 
   let line = lines.shift();
   while (line !== undefined) {
     if (/^\[stream/i.test(line)) {
-      const stream = parseBlock<FfprobeStream>('stream');
-      data.streams.push(stream);
+      const stream = parseBlock('stream');
+      data.streams.push(stream as FfprobeStream);
     } else if (/^\[chapter/i.test(line)) {
       const chapter = parseBlock('chapter');
       data.chapters.push(chapter);
     } else if (line.toLowerCase() === '[format]') {
-      data.format = parseBlock<FfprobeFormat>('format');
+      data.format = parseBlock('format');
     }
 
     line = lines.shift();
@@ -63,6 +59,7 @@ export const ffprobe = async (file: string | Stream) => {
   return new Promise<FfprobeData>((resolve, reject) => {
     const isStream = file instanceof Stream;
     const src = isStream ? 'pipe:0' : file;
+    // eslint-disable-next-line sonarjs/no-os-command-from-path
     const ffprobeProcess = spawn('ffprobe', ['-show_streams', '-show_format', src], { windowsHide: true });
 
     let stdout = '';
@@ -85,11 +82,10 @@ export const ffprobe = async (file: string | Stream) => {
         for (const target of [data.format, ...data.streams]) {
           const legacyTagKeys = Object.keys(target).filter((key: string) => /^TAG:/.exec(key));
           if (legacyTagKeys.length > 0) {
-            target.tags = target.tags || {};
+            target.tags = target.tags ?? {};
 
             for (const tagKey of legacyTagKeys) {
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-              (target.tags as any)[tagKey.slice(4)] = target[tagKey];
+              target.tags[tagKey.slice(4)] = target[tagKey];
               // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
               delete target[tagKey];
             }
@@ -98,11 +94,10 @@ export const ffprobe = async (file: string | Stream) => {
           const legacyDispositionKeys = Object.keys(target).filter((key: string) => /^DISPOSITION:/.exec(key));
 
           if (legacyDispositionKeys.length > 0) {
-            target.disposition = target.disposition || {};
+            target.disposition = target.disposition ?? {};
 
             for (const dispositionKey of legacyDispositionKeys) {
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-              (target.disposition as any)[dispositionKey.slice(12)] = target[dispositionKey];
+              target.disposition[dispositionKey.slice(12)] = target[dispositionKey];
               // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
               delete target[dispositionKey];
             }

@@ -1,7 +1,7 @@
 {
   "name": "async-ffmpeg",
   "description": "Node interaction with ffmpeg in node.js promise style.",
-  "version": "2024.9.21",
+  "version": "2024.10.8",
   "author": {
     "email": "simonegauli@gmail.com",
     "name": "Simone Gauli"
@@ -29,7 +29,7 @@
     "build": "rimraf dist && npm run unused && eslint && npm run build:esm && npm run build:cjs && npm run generate:package.json",
     "build:esm": "tsc -p tsconfig.build.json",
     "build:cjs": "tsc -p tsconfig.build.json --module CommonJS --moduleResolution Node --outDir dist/cjs",
-    "prepare": "npm run build",
+    "prepare": "husky && npm run build",
     "prepublishOnly": "npm run test && npm run lint"
   },
   "files": [
@@ -41,11 +41,12 @@
     "@eslint/js": "^9.12.0",
     "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.13",
-    "@types/node": "^22.7.4",
+    "@types/node": "^22.7.5",
     "coraline": "github:Pnlvfx/coraline",
     "eslint": "^9.12.0",
     "eslint-plugin-sonarjs": "^2.0.3",
     "eslint-plugin-unicorn": "^56.0.0",
+    "husky": "^9.1.6",
     "jest": "^29.7.0",
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
@@ -53,6 +54,6 @@
     "ts-node": "^10.9.2",
     "tsx": "^4.19.1",
     "typescript": "^5.6.2",
-    "typescript-eslint": "^8.8.0"
+    "typescript-eslint": "^8.8.1"
   }
 }

@@ -1,5 +1,5 @@
-import internal from 'node:stream';
 import type { FFmpegParams, Time } from '../types/ffmpeg.js';
+import internal from 'node:stream';
 
 export const getParams = ({
   inputSeeking,
