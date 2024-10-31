@@ -75,4 +75,7 @@ export interface FFmpegParams {
 
   /** Whether to include debug information. Default: false.*/
   debug?: boolean;
+
+  /** Set logging level and flags used by the library. Default value: "info". */
+  logLevel?: 'info' | 'quiet' | 'panic' | 'fatal' | 'warning' | 'verbose' | 'debug' | 'trace';
 }

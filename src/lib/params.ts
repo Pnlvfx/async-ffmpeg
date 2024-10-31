@@ -21,6 +21,7 @@ export const getParams = ({
   videoCodec,
   videoFilter,
   videoFrames,
+  logLevel,
   // eslint-disable-next-line sonarjs/cognitive-complexity
 }: Omit<FFmpegParams, 'debug'>) => {
   const params = ['-y'];
@@ -70,6 +71,9 @@ export const getParams = ({
   }
   if (videoFrames !== undefined) {
     params.push('-vframes', videoFrames.toString());
+  }
+  if (logLevel) {
+    params.push('-loglevel', logLevel);
   }
   if (extra) {
     params.push(...extra);
