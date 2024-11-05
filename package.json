@@ -26,6 +26,7 @@
     "unused": "tsx ./tools/unused.ts",
     "test": "rimraf coverage && jest --coverage",
     "lint": "eslint",
+    "dev": "tsc -p tsconfig.build.json -w & node --watch ./dist/esm/ffmpeg.js",
     "build": "rimraf dist && eslint && npm run build:esm && npm run build:cjs && npm run generate:package.json",
     "build:esm": "tsc -p tsconfig.build.json",
     "build:cjs": "tsc -p tsconfig.build.json --module CommonJS --moduleResolution Node --outDir dist/cjs",
@@ -38,12 +39,12 @@
     "README.md"
   ],
   "devDependencies": {
-    "@eslint/js": "^9.13.0",
+    "@eslint/js": "^9.14.0",
     "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.14",
-    "@types/node": "^22.8.4",
+    "@types/node": "^22.9.0",
     "coraline": "github:Pnlvfx/coraline",
-    "eslint": "^9.13.0",
+    "eslint": "^9.14.0",
     "eslint-plugin-sonarjs": "^2.0.4",
     "eslint-plugin-unicorn": "^56.0.0",
     "husky": "^9.1.6",
@@ -54,6 +55,6 @@
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3",
-    "typescript-eslint": "^8.12.2"
+    "typescript-eslint": "^8.13.0"
   }
 }
