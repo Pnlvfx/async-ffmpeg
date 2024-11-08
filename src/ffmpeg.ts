@@ -52,7 +52,8 @@ export const ffmpeg = async ({ debug, ...ffmpegParams }: FFmpegParams) => {
       params.push('-c:a', audioCodec);
     }
     if (audioBitrate !== undefined) {
-      params.push('-b:a', audioBitrate.toString() + 'k');
+      const v = typeof audioBitrate === 'string' ? audioBitrate : audioBitrate.toString() + 'k';
+      params.push('-b:a', v);
     }
     if (videoCodec) {
       params.push('-c:v', videoCodec);

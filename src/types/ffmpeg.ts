@@ -11,7 +11,7 @@ const audioBitrates = [64, 96, 128, 192, 256, 320] as const;
 
 type AudioBitrateNumber = (typeof audioBitrates)[number];
 
-type AudioBitrateStr = `${AudioBitrateNumber}K`;
+type AudioBitrateStr = `${AudioBitrateNumber}k`;
 
 export type AudioBitrate = AudioBitrateNumber | AudioBitrateStr;
 
