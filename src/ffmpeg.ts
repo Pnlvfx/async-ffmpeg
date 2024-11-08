@@ -111,5 +111,5 @@ export const ffmpeg = async ({ debug, ...ffmpegParams }: FFmpegParams) => {
 export { ffprobe } from './ffprobe.js';
 export { screenCapture } from './screen-capture.js';
 
-export { audioBitrates, type AudioBitrate } from './types/ffmpeg.js';
+export { isValidAudioBitrate, type AudioBitrate } from './types/ffmpeg.js';
 export type { Time } from './types/ffmpeg.js';
