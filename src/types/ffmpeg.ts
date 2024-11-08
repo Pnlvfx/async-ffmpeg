@@ -7,7 +7,7 @@ export interface Time {
   milliseconds?: number;
 }
 
-const audioBitrates = [64, 96, 128, 192, 256, 320] as const;
+const audioBitrates = [32, 48, 64, 96, 128, 160, 192, 224, 256, 320, 384, 448, 512] as const;
 
 type AudioBitrateNumber = (typeof audioBitrates)[number];
 
