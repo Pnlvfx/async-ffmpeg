@@ -1,4 +1,4 @@
-import internal from 'node:stream';
+import { Readable } from 'node:stream';
 
 export interface Time {
   hours?: number;
@@ -9,10 +9,23 @@ export interface Time {
 
 const audioBitrates = [64, 96, 128, 192, 256, 320] as const;
 
-export type AudioBitrate = (typeof audioBitrates)[number];
+type AudioBitrateNumber = (typeof audioBitrates)[number];
 
-export const isValidAudioBitrate = (bitrate: number): bitrate is AudioBitrate => {
-  return audioBitrates.includes(bitrate as AudioBitrate);
+type AudioBitrateStr = `${AudioBitrateNumber}K`;
+
+export type AudioBitrate = AudioBitrateNumber | AudioBitrateStr;
+
+const isValidAudioBitrateNum = (bitrate: number): bitrate is AudioBitrateNumber => {
+  return audioBitrates.includes(bitrate as AudioBitrateNumber);
+};
+
+const isValidAudioBitrateStr = (bitrate: string): bitrate is AudioBitrateStr => {
+  return audioBitrates.map((a) => `${a.toString()}K`).includes(bitrate as AudioBitrateStr);
+};
+
+export const isValidAudioBitrate = (bitrate: number | string): bitrate is AudioBitrate => {
+  if (typeof bitrate === 'number') return isValidAudioBitrateNum(bitrate);
+  return isValidAudioBitrateStr(bitrate);
 };
 
 /**
@@ -20,7 +33,7 @@ export const isValidAudioBitrate = (bitrate: number): bitrate is AudioBitrate =>
  */
 export interface FFmpegParams {
   /** Input file path. Equivalent to the `-i` option in FFmpeg. */
-  input: string | string[] | internal.Readable;
+  input: string | string[] | Readable;
 
   /** audio-only input path. Equivalent to the `-i` option in FFmpeg. */
   audio?: string;
