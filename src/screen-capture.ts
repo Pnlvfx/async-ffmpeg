@@ -23,7 +23,7 @@ export interface ScreenCaptureParams {
 
 let isRunning = false;
 
-export const screenCapture = ({ display, framerate, height, width, x, y, output }: ScreenCaptureParams) => {
+export const X11ScreenCapture = ({ display, framerate, height, width, x, y, output }: ScreenCaptureParams) => {
   if (!isLinux) throw new Error('Screen capture has only been tested on linux systems for now.');
   if (isRunning) throw new Error('Please use the screen capture only once at a time.');
 
