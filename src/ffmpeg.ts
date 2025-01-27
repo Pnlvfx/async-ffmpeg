@@ -102,10 +102,12 @@ export const ffmpeg = async ({ debug, ...ffmpegParams }: FFmpegParams) => {
     if (value === undefined) continue;
     getParams({ [key]: value });
   }
+
   if (debug) {
     // eslint-disable-next-line no-console
     console.log(...params);
   }
+
   await startCommand('ffmpeg', params, ffmpegParams.input instanceof Readable ? ffmpegParams.input : undefined);
 };
 

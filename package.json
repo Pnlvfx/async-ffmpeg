@@ -39,22 +39,22 @@
     "README.md"
   ],
   "devDependencies": {
-    "@eslint/js": "^9.14.0",
+    "@eslint/js": "^9.19.0",
     "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.14",
-    "@types/node": "^22.9.0",
+    "@types/node": "^22.10.10",
     "coraline": "github:Pnlvfx/coraline",
-    "eslint": "^9.14.0",
-    "eslint-plugin-sonarjs": "^2.0.4",
-    "eslint-plugin-unicorn": "^56.0.0",
-    "husky": "^9.1.6",
+    "eslint": "^9.19.0",
+    "eslint-plugin-sonarjs": "^3.0.1",
+    "eslint-plugin-unicorn": "^56.0.1",
+    "husky": "^9.1.7",
     "jest": "^29.7.0",
-    "prettier": "^3.3.3",
+    "prettier": "^3.4.2",
     "rimraf": "^6.0.1",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
-    "typescript": "^5.6.3",
-    "typescript-eslint": "^8.14.0"
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.21.0"
   }
 }
