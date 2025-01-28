@@ -27,11 +27,11 @@
     "test": "rimraf coverage && jest --coverage",
     "lint": "eslint",
     "dev": "tsc -p tsconfig.build.json -w & node --watch ./dist/esm/ffmpeg.js",
-    "build": "rimraf dist && eslint && npm run build:esm && npm run build:cjs && npm run generate:package.json",
+    "build": "rimraf dist && eslint && yarn build:esm && yarn build:cjs && yarn generate:package.json",
     "build:esm": "tsc -p tsconfig.build.json",
     "build:cjs": "tsc -p tsconfig.build.json --module CommonJS --moduleResolution Node --outDir dist/cjs",
-    "prepare": "npm run build",
-    "prepublishOnly": "npm run test && npm run lint"
+    "prepare": "yarn build",
+    "prepublishOnly": "yarn test && yarn lint"
   },
   "files": [
     "dist",
@@ -43,7 +43,7 @@
     "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.10",
-    "coraline": "github:Pnlvfx/coraline",
+    "coraline": "github:Pnlvfx/coraline#workspace=@coraline/base",
     "eslint": "^9.19.0",
     "eslint-plugin-sonarjs": "^3.0.1",
     "eslint-plugin-unicorn": "^56.0.1",
@@ -56,5 +56,9 @@
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.21.0"
-  }
+  },
+  "peerDependencies": {
+    "coraline": "*"
+  },
+  "packageManager": "yarn@4.6.0+sha512.5383cc12567a95f1d668fbe762dfe0075c595b4bfff433be478dbbe24e05251a8e8c3eb992a986667c1d53b6c3a9c85b8398c35a960587fbd9fa3a0915406728"
 }
