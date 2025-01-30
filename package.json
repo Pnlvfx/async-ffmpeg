@@ -24,8 +24,8 @@
     "lint": "eslint",
     "dev": "tsc -p tsconfig.build.json -w & node --watch ./dist/ffmpeg.js",
     "build": "rimraf dist && eslint && tsc -p tsconfig.build.json",
+    "prepare": "husky install",
     "prepack": "yarn build",
-    "prepare": "yarn build",
     "prepublishOnly": "yarn test && yarn lint"
   },
   "files": [
