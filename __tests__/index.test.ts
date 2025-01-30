@@ -2,7 +2,8 @@ import { describe, it } from '@jest/globals';
 import path from 'node:path';
 import { ffmpeg } from '../src/ffmpeg.js';
 import fs from 'node:fs';
-import coraline, { temporaryDirectorySync } from 'coraline';
+import { temporaryDirectorySync } from 'coraline/node/tempy-sync';
+import { rm } from 'coraline/node/shared';
 
 const input = path.join('media', 'video.mp4');
 const temporaryDir = temporaryDirectorySync();
@@ -27,6 +28,6 @@ describe('async ffmpeg', () => {
   );
 
   afterAll(async () => {
-    await coraline.rm(temporaryDir);
+    await rm(temporaryDir);
   });
 });

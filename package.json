@@ -12,24 +12,19 @@
   },
   "license": "MIT",
   "type": "module",
-  "main": "./dist/cjs/ffmpeg.js",
-  "module": "./dist/esm/ffmpeg.js",
-  "types": "./dist/esm/ffmpeg.d.ts",
+  "module": "./dist/ffmpeg.js",
+  "types": "./dist/ffmpeg.d.ts",
   "exports": {
-    "types": "./dist/esm/ffmpeg.d.ts",
-    "import": "./dist/esm/ffmpeg.js",
-    "require": "./dist/cjs/ffmpeg.js"
+    "types": "./dist/ffmpeg.d.ts",
+    "import": "./dist/ffmpeg.js"
   },
   "scripts": {
-    "tsc": "tsc --noEmit true",
-    "generate:package.json": "tsx ./tools/generate-commonjs-package-json.ts dist/cjs/package.json",
     "unused": "tsx ./tools/unused.ts",
     "test": "rimraf coverage && jest --coverage",
     "lint": "eslint",
-    "dev": "tsc -p tsconfig.build.json -w & node --watch ./dist/esm/ffmpeg.js",
-    "build": "rimraf dist && eslint && yarn build:esm && yarn build:cjs && yarn generate:package.json",
-    "build:esm": "tsc -p tsconfig.build.json",
-    "build:cjs": "tsc -p tsconfig.build.json --module CommonJS --moduleResolution Node --outDir dist/cjs",
+    "dev": "tsc -p tsconfig.build.json -w & node --watch ./dist/ffmpeg.js",
+    "build": "rimraf dist && eslint && tsc -p tsconfig.build.json",
+    "prepack": "yarn build",
     "prepare": "yarn build",
     "prepublishOnly": "yarn test && yarn lint"
   },
@@ -42,8 +37,8 @@
     "@eslint/js": "^9.19.0",
     "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.14",
-    "@types/node": "^22.10.10",
-    "coraline": "github:Pnlvfx/coraline#workspace=@coraline/base",
+    "@types/node": "^22.12.0",
+    "coraline": "github:Pnlvfx/coraline",
     "eslint": "^9.19.0",
     "eslint-plugin-sonarjs": "^3.0.1",
     "eslint-plugin-unicorn": "^56.0.1",
@@ -54,9 +49,10 @@
     "rimraf": "^6.0.1",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
+    "ts-unused-exports": "^11.0.1",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.21.0"
+    "typescript-eslint": "^8.22.0"
   },
   "peerDependencies": {
     "coraline": "*"

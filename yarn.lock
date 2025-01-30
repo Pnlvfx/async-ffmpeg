@@ -1445,13 +1445,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@coraline/internal@github:Pnlvfx/coraline#workspace=@coraline/internal":
-  version: 2024.6.12
-  resolution: "@coraline/internal@https://github.com/Pnlvfx/coraline.git#workspace=%40coraline%2Finternal&commit=e853304b2d5a2b3a2e81e3b95032bc6fdc3d45b0"
-  checksum: 10c0/4178fdf264c7d5cc01eb983fe47c0d3e7de57f8d56b3c99bb265fd70581081cf6555d14cff2e8712cb8ed59d438c5f35ee77bed8ab66504f87aa0ea587c2c2b3
-  languageName: node
-  linkType: hard
-
 "@cspotcode/source-map-support@npm:^0.8.0":
   version: 0.8.1
   resolution: "@cspotcode/source-map-support@npm:0.8.1"
@@ -2314,7 +2307,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^22.10.10":
+"@types/node@npm:*, @types/node@npm:^22.12.0":
   version: 22.12.0
   resolution: "@types/node@npm:22.12.0"
   dependencies:
@@ -2655,8 +2648,8 @@ __metadata:
     "@eslint/js": "npm:^9.19.0"
     "@types/eslint__js": "npm:^8.42.3"
     "@types/jest": "npm:^29.5.14"
-    "@types/node": "npm:^22.10.10"
-    coraline: "github:Pnlvfx/coraline#workspace=@coraline/base"
+    "@types/node": "npm:^22.12.0"
+    coraline: "github:Pnlvfx/coraline"
     eslint: "npm:^9.19.0"
     eslint-plugin-sonarjs: "npm:^3.0.1"
     eslint-plugin-unicorn: "npm:^56.0.1"
@@ -2667,9 +2660,10 @@ __metadata:
     rimraf: "npm:^6.0.1"
     ts-jest: "npm:^29.2.5"
     ts-node: "npm:^10.9.2"
+    ts-unused-exports: "npm:^11.0.1"
     tsx: "npm:^4.19.2"
     typescript: "npm:^5.7.3"
-    typescript-eslint: "npm:^8.21.0"
+    typescript-eslint: "npm:^8.22.0"
   peerDependencies:
     coraline: "*"
   languageName: unknown
@@ -3090,14 +3084,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"coraline@github:Pnlvfx/coraline#workspace=@coraline/base":
-  version: 2024.2.19
-  resolution: "coraline@https://github.com/Pnlvfx/coraline.git#workspace=%40coraline%2Fbase&commit=e853304b2d5a2b3a2e81e3b95032bc6fdc3d45b0"
-  dependencies:
-    "@coraline/internal": "github:Pnlvfx/coraline#workspace=@coraline/internal"
-    mime-types: "npm:^2.1.35"
-    ts-unused-exports: "github:Pnlvfx/ts-unused-exports"
-  checksum: 10c0/7c8023a83ca8bcc0d7d8e7d21f92bc44373e67d9810ccc647fec8a1c38e6ce70850a5bd8151d5c73b1468894fbf137813ea2833ee96b32cc7154388d775d003f
+"coraline@github:Pnlvfx/coraline":
+  version: 2025.1.30
+  resolution: "coraline@https://github.com/Pnlvfx/coraline.git#commit=2f16dd4a3badc4a840964e75551f19e4bb163c57"
+  peerDependencies:
+    mime-types: "*"
+    ts-unused-exports: "*"
+  peerDependenciesMeta:
+    mime-types:
+      optional: true
+    ts-unused-exports:
+      optional: true
+  checksum: 10c0/613baf3d0047d0306060533e402e0093e658ead549f03388b784daa20e9066bbf90ed79901b5945b573572da0b37b425b03d652655f56c201ea8244976e4d12f
   languageName: node
   linkType: hard
 
@@ -5543,22 +5541,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mime-db@npm:1.52.0":
-  version: 1.52.0
-  resolution: "mime-db@npm:1.52.0"
-  checksum: 10c0/0557a01deebf45ac5f5777fe7740b2a5c309c6d62d40ceab4e23da9f821899ce7a900b7ac8157d4548ddbb7beffe9abc621250e6d182b0397ec7f10c7b91a5aa
-  languageName: node
-  linkType: hard
-
-"mime-types@npm:^2.1.35":
-  version: 2.1.35
-  resolution: "mime-types@npm:2.1.35"
-  dependencies:
-    mime-db: "npm:1.52.0"
-  checksum: 10c0/82fb07ec56d8ff1fc999a84f2f217aa46cb6ed1033fefaabd5785b9a974ed225c90dc72fff460259e66b95b73648596dbcc50d51ed69cdf464af2d237d3149b2
-  languageName: node
-  linkType: hard
-
 "mimic-fn@npm:^2.1.0":
   version: 2.1.0
   resolution: "mimic-fn@npm:2.1.0"
@@ -6997,9 +6979,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-unused-exports@github:Pnlvfx/ts-unused-exports":
-  version: 10.1.0
-  resolution: "ts-unused-exports@https://github.com/Pnlvfx/ts-unused-exports.git#commit=60d971101dbd56fbcb20a8913ad4372a2c15e1e5"
+"ts-unused-exports@npm:^11.0.1":
+  version: 11.0.1
+  resolution: "ts-unused-exports@npm:11.0.1"
   dependencies:
     chalk: "npm:^4.0.0"
     tsconfig-paths: "npm:^3.9.0"
@@ -7010,7 +6992,7 @@ __metadata:
       optional: false
   bin:
     ts-unused-exports: bin/ts-unused-exports
-  checksum: 10c0/4dacfc0922c021d6fc4e20f63903699428174c8c064338ded8740672f4626b849730cbf4a3fc04dcc7e96603e2ae7f8eb3132bf45f4368c3e8ad6ebc6251a5d0
+  checksum: 10c0/cc5218c7edef9dae880dc78ddb90152c1f3184d2882cf9e40eba1349dab26c74a3034f0c8f7d3654ca45778e663ed55b975d55c7ad765877772b4788a06ca0a7
   languageName: node
   linkType: hard
 
@@ -7132,7 +7114,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript-eslint@npm:^8.21.0":
+"typescript-eslint@npm:^8.22.0":
   version: 8.22.0
   resolution: "typescript-eslint@npm:8.22.0"
   dependencies:
