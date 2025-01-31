@@ -2917,7 +2917,7 @@ __metadata:
 
 "coraline@github:Pnlvfx/coraline":
   version: 2025.1.30
-  resolution: "coraline@https://github.com/Pnlvfx/coraline.git#commit=2f16dd4a3badc4a840964e75551f19e4bb163c57"
+  resolution: "coraline@https://github.com/Pnlvfx/coraline.git#commit=7fb2d2ee7bb8c3ee80561953dc38749072107a55"
   peerDependencies:
     mime-types: "*"
     ts-unused-exports: "*"
@@ -2926,7 +2926,7 @@ __metadata:
       optional: true
     ts-unused-exports:
       optional: true
-  checksum: 10c0/613baf3d0047d0306060533e402e0093e658ead549f03388b784daa20e9066bbf90ed79901b5945b573572da0b37b425b03d652655f56c201ea8244976e4d12f
+  checksum: 10c0/7336e72d2199f1f784b45e76294ec5493db4ed6f579c8948075f0354af971491c4b7fb3f03c3554c74958ddedfa60fb804273800073a5b12e4162cc216c5478a
   languageName: node
   linkType: hard
 
