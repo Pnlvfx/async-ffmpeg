@@ -19,7 +19,7 @@
     "import": "./dist/ffmpeg.js"
   },
   "scripts": {
-    "unused": "tsx ./tools/unused.ts",
+    "unused": "node ./tools/unused.ts",
     "test": "rimraf coverage && jest --coverage",
     "lint": "eslint",
     "dev": "tsc -p tsconfig.build.json -w & node --watch ./dist/ffmpeg.js",
@@ -50,7 +50,6 @@
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "ts-unused-exports": "^11.0.1",
-    "tsx": "^4.19.2",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.22.0"
   },
