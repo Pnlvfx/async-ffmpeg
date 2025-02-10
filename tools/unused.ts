@@ -1,4 +1,4 @@
-import { findUnusedExports } from 'coraline/node/ts-unused-exports';
+import { findUnusedExports } from '@goatjs/node/ts-unused-exports';
 
 const unused = findUnusedExports({
   ignoreFiles: ['ffmpeg.ts', 'eslint.config.js', 'jest.config.ts'],

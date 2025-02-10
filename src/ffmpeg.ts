@@ -2,7 +2,7 @@ import type { FFmpegParams } from './types/ffmpeg.js';
 import { Readable } from 'node:stream';
 import { startCommand } from './lib/process.js';
 import { parseInput, parseTime } from './lib/params.js';
-import { getEntries } from 'coraline/typed-object';
+import { getEntries } from '@goatjs/core/typed-object';
 
 export const ffmpeg = async ({ debug, ...ffmpegParams }: FFmpegParams) => {
   const params: string[] = ['-y'];
