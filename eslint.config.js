@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-// @ts-check
-
 import eslint from '@eslint/js';
 import globals from 'globals';
 import sonarjs from 'eslint-plugin-sonarjs';
@@ -12,7 +9,7 @@ export default tseslint.config(
     ignores: ['dist', 'coverage'],
   },
   eslint.configs.recommended,
-  unicorn.configs['flat/all'],
+  unicorn.configs.all,
   sonarjs.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   ...tseslint.configs.strictTypeChecked,
