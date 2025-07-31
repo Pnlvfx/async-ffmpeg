@@ -2,7 +2,6 @@ import type { FFmpegParams } from './types/ffmpeg.js';
 import { Readable } from 'node:stream';
 import { startCommand } from './lib/process.js';
 import { parseInput, parseTime } from './lib/params.js';
-import { getEntries } from '@goatjs/core/typed-object';
 
 export const ffmpeg = async ({ debug, ...ffmpegParams }: FFmpegParams) => {
   const params: string[] = ['-y'];
@@ -98,7 +97,8 @@ export const ffmpeg = async ({ debug, ...ffmpegParams }: FFmpegParams) => {
     return params;
   };
 
-  for (const [key, value] of getEntries(ffmpegParams)) {
+  for (const [key, value] of Object.entries(ffmpegParams)) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, sonarjs/different-types-comparison
     if (value === undefined) continue;
     getParams({ [key]: value });
   }

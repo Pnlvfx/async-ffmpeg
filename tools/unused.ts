@@ -1,7 +1,7 @@
 import { findUnusedExports } from '@goatjs/ts-unused-exports';
 
-const unused = findUnusedExports({
-  ignoreFiles: ['ffmpeg.ts', 'eslint.config.js', 'jest.config.ts'],
+const unused = await findUnusedExports({
+  ignoreFiles: ['ffmpeg.ts', 'eslint.config.js'],
   ignoreVars: ['ScreenCaptureParams'],
 });
 
