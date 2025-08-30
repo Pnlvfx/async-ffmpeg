@@ -1,7 +1,7 @@
 {
   "name": "async-ffmpeg",
   "description": "Node interaction with ffmpeg in node.js promise style.",
-  "version": "2025.7.31",
+  "version": "2025.8.30",
   "author": {
     "email": "simonegauli@gmail.com",
     "name": "Simone Gauli"
