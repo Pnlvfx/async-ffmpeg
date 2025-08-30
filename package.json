@@ -13,9 +13,21 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    "types": "./dist/ffmpeg.d.ts",
-    "import": "./dist/ffmpeg.js",
-    "require": "./dist/ffmpeg.js"
+    ".": {
+      "types": "./dist/ffmpeg.d.ts",
+      "import": "./dist/ffmpeg.js",
+      "require": "./dist/ffmpeg.js"
+    },
+    "./ffprobe": {
+      "types": "./dist/ffprobe.d.ts",
+      "import": "./dist/ffprobe.js",
+      "require": "./dist/ffprobe.js"
+    },
+    "./screen-capture": {
+      "types": "./dist/screen-capture.d.ts",
+      "import": "./dist/screen-capture.js",
+      "require": "./dist/screen-capture.js"
+    }
   },
   "scripts": {
     "tsc": "tsc --noEmit",
@@ -34,16 +46,17 @@
     "README.md"
   ],
   "devDependencies": {
-    "@goatjs/node-eslint": "^1.0.21",
-    "@goatjs/rimraf": "^1.1.0",
-    "@goatjs/ts-unused-exports": "1.1.0",
-    "@goatjs/typescript-config": "^1.1.0",
-    "@types/node": "^24.1.0",
-    "eslint": "^9.32.0",
+    "@goatjs/node": "^1.14.0",
+    "@goatjs/node-eslint": "^1.2.0",
+    "@goatjs/rimraf": "^1.14.0",
+    "@goatjs/ts-unused-exports": "1.14.0",
+    "@goatjs/typescript-config": "^1.14.0",
+    "@types/node": "^24.3.0",
+    "eslint": "^9.34.0",
     "globals": "^16.3.0",
     "husky": "^9.1.7",
     "prettier": "^3.6.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   },
-  "packageManager": "yarn@4.9.2+sha512.1fc009bc09d13cfd0e19efa44cbfc2b9cf6ca61482725eb35bbc5e257e093ebf4130db6dfe15d604ff4b79efd8e1e8e99b25fa7d0a6197c9f9826358d4d65c3c"
+  "packageManager": "yarn@4.9.4+sha512.7b1cb0b62abba6a537b3a2ce00811a843bea02bcf53138581a6ae5b1bf563f734872bd47de49ce32a9ca9dcaff995aa789577ffb16811da7c603dcf69e73750b"
 }

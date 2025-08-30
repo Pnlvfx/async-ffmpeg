@@ -98,8 +98,6 @@ export const ffmpeg = async ({ debug, ...ffmpegParams }: FFmpegParams) => {
   };
 
   for (const [key, value] of Object.entries(ffmpegParams)) {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, sonarjs/different-types-comparison
-    if (value === undefined) continue;
     getParams({ [key]: value });
   }
 
@@ -110,9 +108,6 @@ export const ffmpeg = async ({ debug, ...ffmpegParams }: FFmpegParams) => {
 
   await startCommand('ffmpeg', params, ffmpegParams.input instanceof Readable ? ffmpegParams.input : undefined);
 };
-
-export { ffprobe } from './ffprobe.js';
-export { X11ScreenCapture } from './screen-capture.js';
 
 export { isValidAudioBitrate, type AudioBitrate } from './types/ffmpeg.js';
 export type { Time } from './types/ffmpeg.js';
