@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Pnlvfx/async-ffmpeg.git"
+    "url": "https://github.com/Pnlvfx/async-ffmpeg.git"
   },
   "license": "MIT",
   "type": "module",
@@ -38,8 +38,7 @@
     "prepare": "husky",
     "prepack": "yarn build",
     "prepublishOnly": "yarn test && yarn lint",
-    "update": "yarn upgrade-interactive",
-    "release": "release-it"
+    "update": "yarn upgrade-interactive"
   },
   "files": [
     "dist",
@@ -57,7 +56,6 @@
     "globals": "^16.3.0",
     "husky": "^9.1.7",
     "prettier": "^3.6.2",
-    "release-it": "^19.0.4",
     "typescript": "^5.9.2"
   },
   "packageManager": "yarn@4.9.4+sha512.7b1cb0b62abba6a537b3a2ce00811a843bea02bcf53138581a6ae5b1bf563f734872bd47de49ce32a9ca9dcaff995aa789577ffb16811da7c603dcf69e73750b"
