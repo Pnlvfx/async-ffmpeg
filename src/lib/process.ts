@@ -31,7 +31,6 @@ export const startCommand = async (command: string, params: string[], stream?: i
     };
 
     ffmpegProcess.on('close', onEnd);
-
     ffmpegProcess.on('exit', onEnd);
   });
 };
